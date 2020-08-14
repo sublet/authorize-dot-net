@@ -1,0 +1,93 @@
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><%= login_id %></name>
+    <transactionKey><%= transaction_key %></transactionKey>
+  </merchantAuthentication>
+  <refId><%= reference_id %></refId>
+  <transactionRequest>
+    <transactionType>authCaptureTransaction</transactionType>
+    <amount><%= amount %></amount>
+    <payment>
+      <creditCard>
+        <cardNumber><%= card.number %></cardNumber>
+        <expirationDate><%= card.expiration.year %>-<%= card.expiration.month %></expirationDate>
+        <cardCode><%= card.code %></cardCode>
+      </creditCard>
+    </payment>
+    <order>
+     <invoiceNumber><%= invoice_number %></invoiceNumber>
+     <description><%= description %></description>
+    </order>
+    <lineItems>
+      <% line_items.forEach(function(line_item) { %>
+      <lineItem>
+        <itemId><%= line_item.id %></itemId>
+        <name><%= line_item.name %></name>
+        <description><%= line_item.description %></description>
+        <quantity><%= line_item.quantity %></quantity>
+        <unitPrice><%= line_item.amount %></unitPrice>
+      </lineItem>
+      <% }); %>
+    </lineItems>
+    <% if (transaction.tax.amount) { %>
+    <tax>
+      <amount><%= transaction.tax.amount %></amount>
+      <name><%= transaction.tax.name %></name>
+      <description><%= transaction.tax.description %></description>
+    </tax>
+    <% } %>
+    <% if (transaction.duty.amount) { %>
+    <duty>
+      <amount><%= transaction.duty.amount %></amount>
+      <name><%= transaction.duty.name %></name>
+      <description><%= transaction.duty.description %></description>
+    </duty>
+    <% } %>
+    <% if (transaction.shipping.amount) { %>
+    <shipping>
+      <amount><%= transaction.shipping.amount %></amount>
+      <name><%= transaction.shipping.name %></name>
+      <description><%= transaction.shipping.description %></description>
+    </shipping>
+    <% } %>
+    <poNumber><%= transaction.duty.amount %></poNumber>
+    <% if (customer_id) { %>
+    <customer>
+      <id><%= customer_id %></id>
+    </customer>
+    <% } %>
+    <billTo>
+      <firstName><%= billing.firstName %></firstName>
+      <lastName><%= billing.lastName %></lastName>
+      <company><%= billing.company %></company>
+      <address><%= billing.address %></address>
+      <city><%= billing.city %></city>
+      <state><%= billing.state %></state>
+      <zip><%= billing.zip %></zip>
+      <country><%= billing.country %></country>
+    </billTo>
+    <shipTo>
+      <firstName><%= shipping.firstName %></firstName>
+      <lastName><%= shipping.lastName %></lastName>
+      <company><%= shipping.company %></company>
+      <address><%= shipping.address %></address>
+      <city><%= shipping.city %></city>
+      <state><%= shipping.state %></state>
+      <zip><%= shipping.zip %></zip>
+      <country><%= shipping.country %></country>
+    </shipTo>
+    <% if (ip_address) { %>
+    <customerIP><%= ip_address %></customerIP>
+    <% } %>
+    <% if (meta_data) { %>
+    <userFields>
+      <% meta_data.forEach(function(meta_data_item) { %>
+      <userField>
+        <name><%= meta_data_item.key %></name>
+        <value><%= meta_data_item.value %></value>
+      </userField>
+      <% }); %>
+    </userFields>
+    <% } %>
+  </transactionRequest>
+</createTransactionRequest>

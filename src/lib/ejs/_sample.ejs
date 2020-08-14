@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Orders pages="1">
+  <% orders.forEach(function(order) { %>
+  <Order>
+    <OrderID><![CDATA[<%= order.uuid %>]]></OrderID>
+    <OrderNumber><![CDATA[<%= order.id %>]]></OrderNumber>
+    <OrderDate><%= order.orderDate %></OrderDate>
+    <OrderStatus><![CDATA[paid]]></OrderStatus>
+    <LastModified><%= order.updateDate %></LastModified>
+    <ShippingMethod><![CDATA[USPSPriorityMail]]></ShippingMethod>
+    <PaymentMethod><![CDATA[Credit Card]]></PaymentMethod>
+    <OrderTotal><%= order.subtotal %></OrderTotal>
+    <TaxAmount>0.00</TaxAmount>
+    <ShippingAmount>0.00</ShippingAmount>
+    <CustomerNotes><![CDATA[]]></CustomerNotes>
+    <InternalNotes><![CDATA[]]></InternalNotes>
+    <Gift>false</Gift>
+    <GiftMessage></GiftMessage>
+    <CustomField1></CustomField1>
+    <CustomField2></CustomField2>
+    <CustomField3></CustomField3>
+    <Customer>
+      <CustomerCode><![CDATA[<%= order.account.email %>]]></CustomerCode>
+      <BillTo>
+        <Name><![CDATA[<%= order.account.firstName %> <%= order.account.lastName %>]]></Name>
+        <Company><![CDATA[]]></Company>
+        <Phone><![CDATA[]]></Phone>
+        <Email><![CDATA[<%= order.account.email %>]]></Email>
+      </BillTo>
+      <ShipTo>
+        <Name><![CDATA[<%= order.account.firstName %> <%= order.account.lastName %>]]></Name>
+        <Company><![CDATA[]]></Company>
+        <Address1><![CDATA[<%= order.shipping.address.street1 %>]]></Address1>
+        <Address2><![CDATA[<%= order.shipping.address.street2 %>]]></Address2>
+        <City><![CDATA[<%= order.shipping.address.city %>]]></City>
+        <State><![CDATA[N<%= order.shipping.address.state %>Y]]></State>
+        <PostalCode><![CDATA[<%= order.shipping.address.postalCode %>]]></PostalCode>
+        <Country><![CDATA[<%= order.shipping.address.country %>]]></Country>
+        <Phone><![CDATA[<%= order.shipping.address.phone %>]]></Phone>
+      </ShipTo>
+    </Customer>
+    <Items>
+      <Item>
+        <SKU><![CDATA[<%= order.plan.code %>]]></SKU>
+        <Name><![CDATA[<%= order.plan.name %>]]></Name>
+        <ImageUrl><![CDATA[http://www.mystore.com/products/12345.jpg]]></ImageUrl>
+        <Weight><%= order.weight %></Weight>
+        <WeightUnits>Ounces</WeightUnits>
+        <Quantity><%= order.quantity %></Quantity>
+        <UnitPrice><%= order.unitAmount %></UnitPrice>
+        <Location><![CDATA[A1-B2]]></Location>
+      </Item>
+    </Items>
+  </Order>
+  <% }); %>
+</Orders>
