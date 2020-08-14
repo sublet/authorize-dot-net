@@ -1,9 +1,9 @@
-const Promise = require("bluebird");
-const axios = require("axios");
+const Promise = require('bluebird');
+const axios = require('axios');
 
 class Fetch {
   host() {
-    throw new Error("Must be overriden.");
+    throw new Error('Must be overriden.');
   }
 
   get axios() {
@@ -30,31 +30,31 @@ class Fetch {
 
   getHeaders() {
     return {
-      "Content-Type": "text/xml",
+      'Content-Type': 'text/xml',
     };
   }
 
   async get(url, params = null) {
-    return await this._request("GET", url, params);
+    return await this._request('GET', url, params);
   }
 
   async post(url, params = null) {
-    return await this._request("POST", url, params);
+    return await this._request('POST', url, params);
   }
 
   async put(url, params = null) {
-    return await this._request("PUT", url, params);
+    return await this._request('PUT', url, params);
   }
 
   async delete(url, params = null) {
-    return await this._request("DELETE", url, params);
+    return await this._request('DELETE', url, params);
   }
 
   _buildQueryStringFromJSON(params) {
     var str = Object.keys(params)
-      .map((key) => key + "=" + params[key])
-      .join("&");
-    return str ? "?" + str : "";
+      .map(key => key + '=' + params[key])
+      .join('&');
+    return str ? '?' + str : '';
   }
 }
 

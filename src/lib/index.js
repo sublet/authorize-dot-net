@@ -1,3 +1,3 @@
 module.exports = {
-  card: require("./resources/credit_card"),
+  card: require('./resources/credit_card'),
 };

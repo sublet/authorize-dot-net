@@ -1,4 +1,4 @@
-const Base = require("../../base");
+const Base = require('../../base');
 
 /**
  * Authorizes a Credit Card so it can be Charged at a later time.
@@ -17,7 +17,7 @@ class CreditCard_Authorize extends Base {
       amount: null,
       customer_id: null,
       invoice_number: null,
-      description: "",
+      description: '',
       ip_address: null,
       card: {
         number: null,
@@ -30,47 +30,47 @@ class CreditCard_Authorize extends Base {
       line_items: [],
       transaction: {
         tax: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
         duty: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
         shipping: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
       },
       billing: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "USA",
+        firstName: '',
+        lastName: '',
+        company: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: 'USA',
       },
       shipping: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "",
+        firstName: '',
+        lastName: '',
+        company: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
       },
       meta_data: null,
     };
   }
 
   toJson() {
-    const json = this._convertResponseToJson()
+    const json = this._convertResponseToJson();
     if (json.createTransactionResponse) {
       const {
         createTransactionResponse: {
@@ -87,12 +87,12 @@ class CreditCard_Authorize extends Base {
       };
       if (data.transId._text) {
         response.isSuccess = true;
-        response["response"] = {
-          transactionId: data.transId._text
+        response['response'] = {
+          transactionId: data.transId._text,
         };
       }
       return response;
-    } else if (json["ErrorResponse"]) {
+    } else if (json['ErrorResponse']) {
       const {
         ErrorResponse: { messages },
       } = json;
@@ -103,7 +103,7 @@ class CreditCard_Authorize extends Base {
         errors: {},
       };
     }
-    throw new Error("Problem parsing the XML to JSON")
+    throw new Error('Problem parsing the XML to JSON');
   }
 }
 

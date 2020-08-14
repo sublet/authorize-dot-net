@@ -1,4 +1,4 @@
-const Base = require("../../base");
+const Base = require('../../base');
 
 /**
  * Charges a Credit Card straight up.
@@ -17,7 +17,7 @@ class CreditCard_Charge extends Base {
       amount: null,
       customer_id: null,
       invoice_number: null,
-      description: "",
+      description: '',
       ip_address: null,
       card: {
         number: null,
@@ -30,40 +30,40 @@ class CreditCard_Charge extends Base {
       line_items: [],
       transaction: {
         tax: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
         duty: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
         shipping: {
-          amount: "",
-          name: "",
-          description: "",
+          amount: '',
+          name: '',
+          description: '',
         },
       },
       billing: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "USA",
+        firstName: '',
+        lastName: '',
+        company: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: 'USA',
       },
       shipping: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "",
+        firstName: '',
+        lastName: '',
+        company: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
       },
       meta_data: null,
     };
@@ -87,14 +87,14 @@ class CreditCard_Charge extends Base {
       };
       if (data.transId._text) {
         response.isSuccess = true;
-        response["response"] = {
+        response['response'] = {
           authorizationCode: data.authCode._text,
           transactionId: data.transId._text,
           transactionHash: data.transHash._text,
         };
       }
       return response;
-    } else if (json["ErrorResponse"]) {
+    } else if (json['ErrorResponse']) {
       const {
         ErrorResponse: { messages },
       } = json;
@@ -105,7 +105,7 @@ class CreditCard_Charge extends Base {
         errors: {},
       };
     }
-    throw new Error("Problem parsing the XML to JSON");
+    throw new Error('Problem parsing the XML to JSON');
   }
 }
 

@@ -1,4 +1,4 @@
-const Base = require("../../base");
+const Base = require('../../base');
 
 /**
  * Authorizes a Credit Card so it can be Charged at a later time.
@@ -17,13 +17,13 @@ class CreditCard_Capture extends Base {
       amount: null,
       transaction_id: null,
       invoice_number: null,
-      description: ""
+      description: '',
     };
   }
 
   toJsonPayload() {
     const json = this._convertPayloadToJson();
-    console.log(json)
+    console.log(json);
     return json;
   }
 
@@ -45,12 +45,12 @@ class CreditCard_Capture extends Base {
       };
       if (data.transId._text) {
         response.isSuccess = true;
-        response["response"] = {
-          transactionId: data.transId._text
+        response['response'] = {
+          transactionId: data.transId._text,
         };
       }
       return response;
-    } else if (json["ErrorResponse"]) {
+    } else if (json['ErrorResponse']) {
       const {
         ErrorResponse: { messages },
       } = json;
@@ -61,7 +61,7 @@ class CreditCard_Capture extends Base {
         errors: {},
       };
     }
-    throw new Error("Problem parsing the XML to JSON");
+    throw new Error('Problem parsing the XML to JSON');
   }
 }
 

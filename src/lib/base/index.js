@@ -1,14 +1,14 @@
-const _ = require("lodash");
-const deepExtend = require("deep-extend");
-const path = require("path");
-const ejs = require("ejs");
-const convert = require("xml-js");
-const Fetch = require("./fetch");
+const _ = require('lodash');
+const deepExtend = require('deep-extend');
+const path = require('path');
+const ejs = require('ejs');
+const convert = require('xml-js');
+const Fetch = require('./fetch');
 
 const mapping = {
-  CREATE_TRANSACTION: "../ejs/credit_card/create.ejs",
-  AUTHORIZE_TRANSACTION: "../ejs/credit_card/authorize.ejs",
-  CAPTURE_TRANSACTION: "../ejs/credit_card/capture.ejs"
+  CREATE_TRANSACTION: '../ejs/credit_card/create.ejs',
+  AUTHORIZE_TRANSACTION: '../ejs/credit_card/authorize.ejs',
+  CAPTURE_TRANSACTION: '../ejs/credit_card/capture.ejs',
 };
 
 class Base extends Fetch {
@@ -20,7 +20,7 @@ class Base extends Fetch {
     this._uri = null;
     this._filePath = path.resolve(__dirname, mapping[type]);
 
-    this._debug = (process.env.AUTHORIZE_DEBUG === 'true')
+    this._debug = process.env.AUTHORIZE_DEBUG === 'true';
   }
 
   // Overwrites
@@ -30,11 +30,11 @@ class Base extends Fetch {
   }
 
   default() {
-    throw new Error("Must inherit this.");
+    throw new Error('Must inherit this.');
   }
 
   toJson() {
-    throw new Error("Must inherit this.");
+    throw new Error('Must inherit this.');
   }
 
   // Methods
@@ -48,7 +48,7 @@ class Base extends Fetch {
       this._response = await this._send(this._payload);
       return this;
     }
-    throw new Error("Payload could not be generated.");
+    throw new Error('Payload could not be generated.');
   }
 
   get payload() {
@@ -63,13 +63,13 @@ class Base extends Fetch {
 
   _convertResponseToJson() {
     return JSON.parse(
-      convert.xml2json(this._response, { compact: true, spaces: 4 })
+      convert.xml2json(this._response, { compact: true, spaces: 4 }),
     );
   }
 
   _convertPayloadToJson() {
     return JSON.parse(
-      convert.xml2json(this._payload, { compact: true, spaces: 4 })
+      convert.xml2json(this._payload, { compact: true, spaces: 4 }),
     );
   }
 
@@ -96,7 +96,7 @@ class Base extends Fetch {
     if (response) {
       return response;
     }
-    throw new Error("Response is invalid");
+    throw new Error('Response is invalid');
   }
 
   _buildPayload(data) {
