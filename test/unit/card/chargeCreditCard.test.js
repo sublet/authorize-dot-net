@@ -45,7 +45,7 @@ describe('Credit Card', () => {
   });
 
   describe('Authorize', () => {
-    it.only('should return a successful transaction payload', async () => {
+    it('should return a successful transaction payload', async () => {
       authorize.setSandbox()
   
       const data = {
@@ -72,12 +72,14 @@ describe('Credit Card', () => {
       }
   
       const res = await authorize.chargeCreditCard(data)
-      console.log(res.response)
       const results = res.toJson()
   
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id)
   
     });
+
+    // TODO: Add Error...
+    
   });
 });
