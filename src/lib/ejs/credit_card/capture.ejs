@@ -1,0 +1,16 @@
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><%= login_id %></name>
+    <transactionKey><%= transaction_key %></transactionKey>
+  </merchantAuthentication>
+  <refId><%= reference_id %></refId>
+  <transactionRequest>
+    <transactionType>priorAuthCaptureTransaction</transactionType>
+    <amount><%= amount %></amount>
+    <refTransId><%= transaction_id %></refTransId>
+   <order>
+     <invoiceNumber><%= invoice_number %></invoiceNumber>
+     <description>Product Description</description>
+   </order>
+  </transactionRequest>
+</createTransactionRequest>

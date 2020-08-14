@@ -6,8 +6,9 @@ const convert = require("xml-js");
 const Fetch = require("./fetch");
 
 const mapping = {
-  CREATE_TRANSACTION: "../ejs/credit_card/create_transaction.ejs",
-  AUTHORIZE_TRANSACTION: "../ejs/credit_card/authorize_transaction.ejs",
+  CREATE_TRANSACTION: "../ejs/credit_card/create.ejs",
+  AUTHORIZE_TRANSACTION: "../ejs/credit_card/authorize.ejs",
+  CAPTURE_TRANSACTION: "../ejs/credit_card/capture.ejs"
 };
 
 class Base extends Fetch {
@@ -18,6 +19,8 @@ class Base extends Fetch {
     this._payload = null;
     this._uri = null;
     this._filePath = path.resolve(__dirname, mapping[type]);
+
+    this._debug = (process.env.AUTHORIZE_DEBUG === 'true')
   }
 
   // Overwrites
@@ -61,6 +64,12 @@ class Base extends Fetch {
   _convertResponseToJson() {
     return JSON.parse(
       convert.xml2json(this._response, { compact: true, spaces: 4 })
+    );
+  }
+
+  _convertPayloadToJson() {
+    return JSON.parse(
+      convert.xml2json(this._payload, { compact: true, spaces: 4 })
     );
   }
 

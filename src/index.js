@@ -31,6 +31,14 @@ class AuthorizeDotNet extends Fetch {
     }
     throw new Error("There was a problem authorizing the card.");
   }
+
+  async captureCreditCard(data) {
+    const response = await authorize.card.capture.process(data, this._config);
+    if (response) {
+      return response;
+    }
+    throw new Error("There was a problem authorizing the card.");
+  }
 }
 
 module.exports = (config) => new AuthorizeDotNet(config);

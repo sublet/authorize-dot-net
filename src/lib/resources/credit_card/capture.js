@@ -10,67 +10,25 @@ const Base = require("../../base");
  *
  */
 
-class CreditCard_Authorize extends Base {
+class CreditCard_Capture extends Base {
   default() {
     return {
       reference_id: null,
       amount: null,
-      customer_id: null,
+      transaction_id: null,
       invoice_number: null,
-      description: "",
-      ip_address: null,
-      card: {
-        number: null,
-        code: null,
-        expiration: {
-          month: null,
-          year: null,
-        },
-      },
-      line_items: [],
-      transaction: {
-        tax: {
-          amount: "",
-          name: "",
-          description: "",
-        },
-        duty: {
-          amount: "",
-          name: "",
-          description: "",
-        },
-        shipping: {
-          amount: "",
-          name: "",
-          description: "",
-        },
-      },
-      billing: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "USA",
-      },
-      shipping: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        country: "",
-      },
-      meta_data: null,
+      description: ""
     };
   }
 
+  toJsonPayload() {
+    const json = this._convertPayloadToJson();
+    console.log(json)
+    return json;
+  }
+
   toJson() {
-    const json = this._convertResponseToJson()
+    const json = this._convertResponseToJson();
     if (json.createTransactionResponse) {
       const {
         createTransactionResponse: {
@@ -103,8 +61,8 @@ class CreditCard_Authorize extends Base {
         errors: {},
       };
     }
-    throw new Error("Problem parsing the XML to JSON")
+    throw new Error("Problem parsing the XML to JSON");
   }
 }
 
-module.exports = CreditCard_Authorize;
+module.exports = CreditCard_Capture;

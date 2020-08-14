@@ -85,10 +85,9 @@ class CreditCard_Charge extends Base {
         messages: this._jsonMessages(messages),
         errors: this._jsonErrors(data.errors),
       };
-      if (data.authCode._text) {
+      if (data.transId._text) {
         response.isSuccess = true;
         response["response"] = {
-          networkTransactionId: data.networkTransId._text,
           authorizationCode: data.authCode._text,
           transactionId: data.transId._text,
           transactionHash: data.transHash._text,
