@@ -34,7 +34,7 @@ describe('NMI', function () {
           country: 'USA',
         },
         email: 'sublet@me.com',
-        phone: '9783353373'
+        phone: '9783353373',
       };
 
       const res = await gateway.chargeCreditCard(data);
@@ -46,6 +46,5 @@ describe('NMI', function () {
     });
 
     // TODO: Add Error...
-
   });
 });

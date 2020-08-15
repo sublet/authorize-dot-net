@@ -1,4 +1,3 @@
-
 const Fetch = require('./lib/base/fetch');
 
 const authorize = require('./lib/authorize');
@@ -16,10 +15,10 @@ class PaymentGateway extends Fetch {
     if (!config.environment) throw new Error('Environment is invalid');
     if (config.gateway === 'AUTHORIZE') {
       if (!config.id) throw new Error('Login ID is invalid');
-      config.login_id = config.id
-      config.transaction_key = config.key
-      delete config.id
-      delete config.key
+      config.login_id = config.id;
+      config.transaction_key = config.key;
+      delete config.id;
+      delete config.key;
     }
 
     this._gateway = null;
@@ -54,7 +53,7 @@ class PaymentGateway extends Fetch {
             : 'https://apitest.authorize.net/xml';
       } else if (this._config.gateway === 'NMI') {
         this._gateway = nmi;
-        uri = 'https://secure.networkmerchants.com/api/transact.php'
+        uri = 'https://secure.networkmerchants.com/api/transact.php';
       }
       this._config.uri = uri;
     }
@@ -83,9 +82,12 @@ class PaymentGateway extends Fetch {
    */
 
   async chargeCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.')
+    if (!this._gateway) throw new Error('Gatway not set.');
 
-    const response = await this._gateway.card.charge.process(data, this._config);
+    const response = await this._gateway.card.charge.process(
+      data,
+      this._config,
+    );
     if (response) {
       return response;
     }
@@ -111,9 +113,12 @@ class PaymentGateway extends Fetch {
    */
 
   async authorizeCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.')
+    if (!this._gateway) throw new Error('Gatway not set.');
 
-    const response = await this._gateway.card.authorize.process(data, this._config);
+    const response = await this._gateway.card.authorize.process(
+      data,
+      this._config,
+    );
     if (response) {
       return response;
     }
@@ -133,9 +138,12 @@ class PaymentGateway extends Fetch {
    * @param {String} data.transaction_id
    */
   async captureCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.')
-    
-    const response = await this._gateway.card.capture.process(data, this._config);
+    if (!this._gateway) throw new Error('Gatway not set.');
+
+    const response = await this._gateway.card.capture.process(
+      data,
+      this._config,
+    );
     if (response) {
       return response;
     }

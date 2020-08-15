@@ -25,8 +25,8 @@ class NMI extends Fetch {
 
     return {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(data)
-    }
+      'Content-Length': Buffer.byteLength(data),
+    };
   }
 
   default() {
@@ -91,14 +91,14 @@ class NMI extends Fetch {
     throw new Error('Response is invalid');
   }
 
-  _queryStringToJSON(queryString) {         
-    const pairs = queryString.split('&')
+  _queryStringToJSON(queryString) {
+    const pairs = queryString.split('&');
     const result = {};
-    pairs.forEach(function(pair) {
-        pair = pair.split('=')
-        result[pair[0]] = decodeURIComponent(pair[1] || '')
-    })
-    return JSON.parse(JSON.stringify(result))
+    pairs.forEach(function (pair) {
+      pair = pair.split('=');
+      result[pair[0]] = decodeURIComponent(pair[1] || '');
+    });
+    return JSON.parse(JSON.stringify(result));
   }
 }
 

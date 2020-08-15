@@ -11,33 +11,33 @@ const NMI = require('../../../base/nmi');
  */
 
 class CreditCard_Charge extends NMI {
-
   build(data, key) {
-    const payload = this.default()
+    const payload = this.default();
 
-    payload.security_key = key
-    payload.amount = data.amount,
-    payload.ccnumber = data.card.number
-    payload.ccexp = `${data.card.expiration.month}${data.card.expiration.year.substr(2,4)}`
-    payload.cvv = data.card.code
-    payload.merchant_defined_field_1 = data.reference_id
+    payload.security_key = key;
+    (payload.amount = data.amount), (payload.ccnumber = data.card.number);
+    payload.ccexp = `${
+      data.card.expiration.month
+    }${data.card.expiration.year.substr(2, 4)}`;
+    payload.cvv = data.card.code;
+    payload.merchant_defined_field_1 = data.reference_id;
 
-    if (data.email) payload.email = data.email
-    if (data.phone) payload.phone = data.phone
-    if (data.billing.firstName) payload.first_name = data.billing.firstName
+    if (data.email) payload.email = data.email;
+    if (data.phone) payload.phone = data.phone;
+    if (data.billing.firstName) payload.first_name = data.billing.firstName;
 
     if (data.billing) {
-      if (data.billing.firstName) payload.first_name = data.billing.firstName
-      if (data.billing.firstName) payload.last_name = data.billing.lastName
-      if (data.billing.address) payload.address1 = data.billing.address
-      if (data.billing.address2) payload.address2 = data.billing.address2
-      if (data.billing.city) payload.city = data.billing.city
-      if (data.billing.state) payload.state = data.billing.state
-      if (data.billing.zip) payload.zip = data.billing.zip
-      if (data.billing.country) payload.country = data.billing.country
+      if (data.billing.firstName) payload.first_name = data.billing.firstName;
+      if (data.billing.firstName) payload.last_name = data.billing.lastName;
+      if (data.billing.address) payload.address1 = data.billing.address;
+      if (data.billing.address2) payload.address2 = data.billing.address2;
+      if (data.billing.city) payload.city = data.billing.city;
+      if (data.billing.state) payload.state = data.billing.state;
+      if (data.billing.zip) payload.zip = data.billing.zip;
+      if (data.billing.country) payload.country = data.billing.country;
     }
 
-    return payload
+    return payload;
   }
 
   default() {
@@ -58,7 +58,7 @@ class CreditCard_Charge extends NMI {
       zip: null,
       phone: null,
       email: null,
-      merchant_defined_field_1: null
+      merchant_defined_field_1: null,
     };
   }
 
