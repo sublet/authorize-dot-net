@@ -9,9 +9,10 @@ const gateway = require('../../../src')({
   gateway: 'AUTHORIZE',
 });
 
-describe('Credit Card - Charge', function () {
-  it('should return a transaction id', async function () {
-    const data = {
+describe('Credit Card - Capture', function () {
+  let authorization;
+  before(async () => {
+    const authorizeData = {
       reference_id: uuid().replace(/-/g, '').substr(0, 15),
       amount: '386.12',
       invoice_number: uuid().replace(/-/g, '').substr(0, 15),
@@ -34,7 +35,25 @@ describe('Credit Card - Charge', function () {
       },
     };
 
-    const res = await gateway.chargeCreditCard(data);
+    const res = await gateway.authorizeCreditCard(authorizeData);
+    authorization = res.toJson();
+  });
+  it('should return a transaction id', async function () {
+    expect(authorization.isSuccess).to.be.true;
+
+    const {
+      referenceId,
+      response: { transactionId },
+    } = authorization;
+
+    const data = {
+      reference_id: referenceId,
+      amount: '212.12',
+      transaction_id: transactionId,
+      invoice_number: uuid().replace(/-/g, '').substr(0, 15),
+    };
+
+    const res = await gateway.captureCreditCard(data);
     const results = res.toJson();
 
     expect(results.isSuccess).to.be.true;

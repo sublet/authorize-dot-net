@@ -1,4 +1,4 @@
-const Base = require('../../base');
+const Authorize = require('../../../base/authorize');
 
 /**
  * Authorizes a Credit Card so it can be Charged at a later time.
@@ -10,7 +10,7 @@ const Base = require('../../base');
  *
  */
 
-class CreditCard_Capture extends Base {
+class CreditCard_Capture extends Authorize {
   default() {
     return {
       reference_id: null,

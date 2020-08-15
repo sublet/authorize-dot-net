@@ -1,0 +1,31 @@
+<createCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+<merchantAuthentication>
+    <name><%= login_id %></name>
+    <transactionKey><%= transaction_key %></transactionKey>
+  </merchantAuthentication>
+  <customerProfileId><%= customer_id %></customerProfileId>
+  <paymentProfile>
+    <billTo>
+      <firstName><%= billing.firstName %></firstName>
+      <lastName><%= billing.lastName %></lastName>
+      <company><%= billing.company %></company>
+      <address><%= billing.address %></address>
+      <city><%= billing.city %></city>
+      <state><%= billing.state %></state>
+      <zip><%= billing.zip %></zip>
+      <country><%= billing.country %></country>
+      <phoneNumber><%= billing.phone %></phoneNumber>
+      <faxNumber></faxNumber>
+    </billTo>
+    <payment>
+      <creditCard>
+        <cardNumber><%= card.number %></cardNumber>
+        <expirationDate><%= card.expiration.year %>-<%= card.expiration.month %></expirationDate>
+      </creditCard>
+    </payment>
+    <defaultPaymentProfile><%= card.isDefault %></defaultPaymentProfile>
+  </paymentProfile>
+  <% if (isTest) { %>
+    <validationMode>testMode</validationMode>
+  <% } %>
+</createCustomerPaymentProfileRequest>

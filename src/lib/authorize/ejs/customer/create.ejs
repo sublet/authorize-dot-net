@@ -1,0 +1,25 @@
+<createCustomerProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"> 
+  <merchantAuthentication>
+    <name><%= login_id %></name>
+    <transactionKey><%= transaction_key %></transactionKey>
+  </merchantAuthentication>
+  <profile>
+    <merchantCustomerId><%= customer.id %></merchantCustomerId>
+    <description><%= customer.description %></description>
+    <email><%= customer.email %></email>
+    <% if (cards) { %>
+    <paymentProfiles>
+      <customerType>individual</customerType>
+      <payment>
+        <creditCard>
+          <cardNumber><%= card.number %></cardNumber>
+          <expirationDate><%= card.expiration.year %>-<%= card.expiration.month %></expirationDate>
+        </creditCard>
+      </payment>
+    </paymentProfiles>
+    <% } %>
+  </profile>
+  <% if (isTest) { %>
+    <validationMode>testMode</validationMode>
+  <% } %>
+ </createCustomerProfileRequest>

@@ -11,7 +11,7 @@ const mapping = {
   CAPTURE_TRANSACTION: '../ejs/credit_card/capture.ejs',
 };
 
-class Base extends Fetch {
+class NMI extends Fetch {
   constructor(type) {
     super();
 
@@ -20,7 +20,7 @@ class Base extends Fetch {
     this._uri = null;
     this._filePath = path.resolve(__dirname, mapping[type]);
 
-    this._debug = process.env.AUTHORIZE_DEBUG === 'true';
+    this._debug = process.env.DEBUG === 'true';
   }
 
   // Overwrites
@@ -113,4 +113,4 @@ class Base extends Fetch {
   }
 }
 
-module.exports = Base;
+module.exports = NMI;

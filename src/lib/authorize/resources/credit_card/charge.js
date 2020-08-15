@@ -1,16 +1,16 @@
-const Base = require('../../base');
+const Authorize = require('../../../base/authorize');
 
 /**
- * Authorizes a Credit Card so it can be Charged at a later time.
+ * Charges a Credit Card straight up.
  *
- * @class CreditCard_Authorize
+ * @class CreditCard_Charge
  * @extends Base
  *
- * https://developer.authorize.net/api/reference/index.html#payment-transactions-authorize-a-credit-card
+ * https://developer.authorize.net/api/reference/index.html#payment-transactions-charge-a-credit-card
  *
  */
 
-class CreditCard_Authorize extends Base {
+class CreditCard_Charge extends Authorize {
   default() {
     return {
       reference_id: null,
@@ -88,7 +88,9 @@ class CreditCard_Authorize extends Base {
       if (data.transId._text) {
         response.isSuccess = true;
         response['response'] = {
+          authorizationCode: data.authCode._text,
           transactionId: data.transId._text,
+          transactionHash: data.transHash._text,
         };
       }
       return response;
@@ -107,4 +109,4 @@ class CreditCard_Authorize extends Base {
   }
 }
 
-module.exports = CreditCard_Authorize;
+module.exports = CreditCard_Charge;
