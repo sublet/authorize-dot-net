@@ -1,24 +1,15 @@
-const _ = require('lodash');
-const deepExtend = require('deep-extend');
-const path = require('path');
-const ejs = require('ejs');
-const convert = require('xml-js');
+// const _ = require('lodash');
+const querystring = require('querystring');
 const Fetch = require('./fetch');
-
-const mapping = {
-  CREATE_TRANSACTION: '../ejs/credit_card/create.ejs',
-  AUTHORIZE_TRANSACTION: '../ejs/credit_card/authorize.ejs',
-  CAPTURE_TRANSACTION: '../ejs/credit_card/capture.ejs',
-};
 
 class NMI extends Fetch {
   constructor(type) {
     super();
 
+    this._type = type;
     this._response = null;
     this._payload = null;
     this._uri = null;
-    this._filePath = path.resolve(__dirname, mapping[type]);
 
     this._debug = process.env.DEBUG === 'true';
   }
@@ -29,7 +20,20 @@ class NMI extends Fetch {
     return this._uri;
   }
 
+  getHeaders() {
+    const data = querystring.stringify(this._payload);
+
+    return {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(data)
+    }
+  }
+
   default() {
+    throw new Error('Must inherit this.');
+  }
+
+  build() {
     throw new Error('Must inherit this.');
   }
 
@@ -41,11 +45,9 @@ class NMI extends Fetch {
 
   async process(data, config) {
     this._uri = config.uri;
-    data = _.extend(data, config);
-    data = deepExtend(this.default(), data);
-    this._payload = await this._buildPayload(data);
+    this._payload = this.build(data, config.key);
     if (this._payload) {
-      this._response = await this._send(this._payload);
+      this._response = await this._send();
       return this;
     }
     throw new Error('Payload could not be generated.');
@@ -61,23 +63,11 @@ class NMI extends Fetch {
 
   // private
 
-  _convertResponseToJson() {
-    return JSON.parse(
-      convert.xml2json(this._response, { compact: true, spaces: 4 }),
-    );
-  }
-
-  _convertPayloadToJson() {
-    return JSON.parse(
-      convert.xml2json(this._payload, { compact: true, spaces: 4 }),
-    );
-  }
-
-  _jsonMessages(messages) {
+  _jsonMessages(json) {
     return {
-      responseCode: messages.resultCode._text,
-      code: messages.message.code._text,
-      message: messages.message.text._text,
+      responseCode: json.responsetext,
+      code: json.response_code,
+      message: json.responsetext,
     };
   }
 
@@ -91,25 +81,24 @@ class NMI extends Fetch {
     return {};
   }
 
-  async _send(xmlData) {
-    const response = await this.post(`/v1/request.api`, xmlData);
+  async _send() {
+    const data = querystring.stringify(this._payload);
+
+    const response = await this.post(`/v1/request.api`, data);
     if (response) {
       return response;
     }
     throw new Error('Response is invalid');
   }
 
-  _buildPayload(data) {
-    return this._getFile(this._filePath, data);
-  }
-
-  _getFile(filePath, data) {
-    return new Promise((resolve, reject) => {
-      ejs.renderFile(filePath, data, (err, str) => {
-        if (err) reject(err);
-        resolve(str);
-      });
-    });
+  _queryStringToJSON(queryString) {         
+    const pairs = queryString.split('&')
+    const result = {};
+    pairs.forEach(function(pair) {
+        pair = pair.split('=')
+        result[pair[0]] = decodeURIComponent(pair[1] || '')
+    })
+    return JSON.parse(JSON.stringify(result))
   }
 }
 

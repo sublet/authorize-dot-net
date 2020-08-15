@@ -15,6 +15,7 @@ class Authorize extends Fetch {
   constructor(type) {
     super();
 
+    this._type = type;
     this._response = null;
     this._payload = null;
     this._uri = null;

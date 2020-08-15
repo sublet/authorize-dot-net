@@ -1,32 +1,39 @@
-const authorize = require('./lib/authorize');
+
 const Fetch = require('./lib/base/fetch');
 
+const authorize = require('./lib/authorize');
+const nmi = require('./lib/nmi');
+
 const gateways = ['AUTHORIZE', 'NMI'];
-const gatewayTypes = ['SANDBOX', 'PRODUCTION'];
+const environments = ['SANDBOX', 'PRODUCTION'];
 
 class PaymentGateway extends Fetch {
   constructor(config) {
     super();
 
-    if (!config.login_id) throw new Error('Login ID is invalid');
-    if (!config.transaction_key) throw new Error('Transaction Key is invalid');
+    if (!config.key) throw new Error('Key is invalid');
+    if (!config.gateway) throw new Error('Gateway is invalid');
+    if (!config.environment) throw new Error('Environment is invalid');
+    if (config.gateway === 'AUTHORIZE') {
+      if (!config.id) throw new Error('Login ID is invalid');
+      config.login_id = config.id
+      config.transaction_key = config.key
+      delete config.id
+      delete config.key
+    }
 
     this._gateway = null;
 
     this._config = config;
     this._config.uri = null;
-    this._config.gateway = this._config.gateway ? this._config.gateway : null;
-    this._config.gatewayType = this._config.gateway_type
-      ? this._config.gateway_type
-      : null;
 
     this._setGatewayUri();
   }
 
-  setGatewayType(type) {
-    if (gatewayTypes.indexOf(type) < 0)
-      throw new Error('Gateway Type is invalid');
-    this._config.gatewayType = type;
+  setEnvironment(environment) {
+    if (environments.indexOf(environment) < 0)
+      throw new Error('Environment is invalid');
+    this._config.environment = environment;
     this._setGatewayUri();
   }
 
@@ -37,18 +44,17 @@ class PaymentGateway extends Fetch {
   }
 
   _setGatewayUri() {
-    if (this._config.gateway && this._config.gatewayType) {
+    if (this._config.gateway && this._config.environment) {
       let uri = null;
       if (this._config.gateway === 'AUTHORIZE') {
         this._gateway = authorize;
         uri =
-          this._config.gatewayType === 'PRODUCTION'
+          this._config.environment === 'PRODUCTION'
             ? 'https://api.authorize.net/xml'
             : 'https://apitest.authorize.net/xml';
       } else if (this._config.gateway === 'NMI') {
-        // this._gateway = nmi
-        uri =
-          this._config.gatewayType === 'PRODUCTION' ? 'PRODUCTION' : 'SANDBOX';
+        this._gateway = nmi;
+        uri = 'https://secure.networkmerchants.com/api/transact.php'
       }
       this._config.uri = uri;
     }
@@ -77,7 +83,9 @@ class PaymentGateway extends Fetch {
    */
 
   async chargeCreditCard(data) {
-    const response = await authorize.card.charge.process(data, this._config);
+    if (!this._gateway) throw new Error('Gatway not set.')
+
+    const response = await this._gateway.card.charge.process(data, this._config);
     if (response) {
       return response;
     }
@@ -103,7 +111,9 @@ class PaymentGateway extends Fetch {
    */
 
   async authorizeCreditCard(data) {
-    const response = await authorize.card.authorize.process(data, this._config);
+    if (!this._gateway) throw new Error('Gatway not set.')
+
+    const response = await this._gateway.card.authorize.process(data, this._config);
     if (response) {
       return response;
     }
@@ -123,7 +133,9 @@ class PaymentGateway extends Fetch {
    * @param {String} data.transaction_id
    */
   async captureCreditCard(data) {
-    const response = await authorize.card.capture.process(data, this._config);
+    if (!this._gateway) throw new Error('Gatway not set.')
+    
+    const response = await this._gateway.card.capture.process(data, this._config);
     if (response) {
       return response;
     }
