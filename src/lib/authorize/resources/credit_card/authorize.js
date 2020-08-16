@@ -140,7 +140,7 @@ class CreditCard_Authorize extends Authorize {
         <networkTransId>F8GLX5LBK9R2K0U3C34CTJU</networkTransId>
       </transactionResponse>
     </createTransactionResponse>
-    `
+    `;
   }
 }
 

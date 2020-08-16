@@ -83,8 +83,8 @@ class CreditCard_Capture extends NMI {
       response_code=100&
       cc_number=5xxxxxxxxxxx0015&
       customer_vault_id=
-    `
-    return str.replace((/  |\r\n|\n|\r/gm),""); // eslint-disable-line
+    `;
+    return str.replace(/  |\r\n|\n|\r/gm, ''); // eslint-disable-line
   }
 }
 

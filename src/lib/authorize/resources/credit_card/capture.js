@@ -96,7 +96,7 @@ class CreditCard_Capture extends Authorize {
           <transHashSha2 />
         </transactionResponse>
       </createTransactionResponse>
-    `
+    `;
   }
 }
 

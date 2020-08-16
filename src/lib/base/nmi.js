@@ -86,8 +86,8 @@ class NMI extends Fetch {
   }
 
   async _send() {
-    if (process.env.NODE_ENV === 'test') return this.testResponse()
-    
+    if (process.env.NODE_ENV === 'test') return this.testResponse();
+
     const data = querystring.stringify(this._payload);
 
     const response = await this.post(`/v1/request.api`, data);

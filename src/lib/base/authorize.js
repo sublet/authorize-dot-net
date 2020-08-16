@@ -98,7 +98,7 @@ class Authorize extends Fetch {
   }
 
   async _send(xmlData) {
-    if (process.env.NODE_ENV === 'test') return this.testResponse()
+    if (process.env.NODE_ENV === 'test') return this.testResponse();
 
     const response = await this.post(`/v1/request.api`, xmlData);
     if (response) {
