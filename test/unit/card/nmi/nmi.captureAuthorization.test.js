@@ -10,9 +10,10 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
-  describe('Credit Card - Charge', function () {
-    it('should return a transaction id', async function () {
-      const data = {
+  describe('Credit Card - Capture', function () {
+    let authorization;
+    before(async () => {
+      const authorizeData = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         amount: '386.12',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
@@ -33,19 +34,33 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
         },
-        email: 'sublet@me.com',
-        phone: '9783353373',
       };
 
-      const res = await gateway.chargeCreditCard(data);
+      const res = await gateway.authorizeCreditCard(authorizeData);
+      authorization = res.toJson();
+    });
+    it('should return a transaction id', async function () {
+      expect(authorization.isSuccess).to.be.true;
+
+      const {
+        referenceId,
+        response: { transactionId },
+      } = authorization;
+
+      const data = {
+        reference_id: referenceId,
+        amount: '212.12',
+        transaction_id: transactionId,
+        invoice_number: uuid().replace(/-/g, '').substr(0, 15),
+      };
+
+      const res = await gateway.captureCreditCard(data);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.transactionId).to.be.a('string');
     });
-
-    // TODO: Try using payment token...
 
     // TODO: Add Error...
   });

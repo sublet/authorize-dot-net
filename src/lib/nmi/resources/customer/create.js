@@ -1,16 +1,16 @@
 const NMI = require('../../../base/nmi');
 
 /**
- * Charges a Credit Card straight up.
+ * Create a Customer.
  *
- * @class CreditCard_Charge
+ * @class Customer_Create
  * @extends NMI
  *
  * https://developer.authorize.net/api/reference/index.html#payment-transactions-charge-a-credit-card
  *
  */
 
-class CreditCard_Charge extends NMI {
+class Customer_Create extends NMI {
   build(data, key) {
     const payload = this.default();
 
@@ -43,8 +43,7 @@ class CreditCard_Charge extends NMI {
   default() {
     return {
       security_key: null,
-      type: 'sale',
-      amount: null,
+      customer_vault: 'add_customer',
       ccnumber: null,
       ccexp: null,
       cvv: null,
@@ -59,7 +58,6 @@ class CreditCard_Charge extends NMI {
       phone: null,
       email: null,
       merchant_defined_field_1: null,
-      customer_receipt: false,
     };
   }
 
@@ -72,12 +70,12 @@ class CreditCard_Charge extends NMI {
         messages: this._jsonMessages(json),
         errors: this._jsonErrors(null),
       };
-      if (json.transactionid) {
+      if (json.customer_vault_id) {
         response.isSuccess = true;
         response['response'] = {
           authorizationCode: json.authcode,
           transactionId: json.transactionid,
-          transactionHash: null,
+          customerId: json.customer_vault_id,
         };
       }
       return response;
@@ -96,21 +94,8 @@ class CreditCard_Charge extends NMI {
   }
 
   testResponse() {
-    const str = `
-      response=1&
-      responsetext=SUCCESS&
-      authcode=123456&
-      transactionid=5575816597&
-      avsresponse=N&
-      cvvresponse=M&
-      orderid=&
-      type=sale&
-      response_code=100&
-      cc_number=5xxxxxxxxxxx0015&
-      customer_vault_id=
-    `
-    return str.replace((/  |\r\n|\n|\r/gm),""); // eslint-disable-line
+    return 'response=1&responsetext=Customer Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&cc_number=5xxxxxxxxxxx0015&customer_vault_id=1077659627'
   }
 }
 
-module.exports = CreditCard_Charge;
+module.exports = Customer_Create;

@@ -10,8 +10,8 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
-  describe('Credit Card - Charge', function () {
-    it('should return a transaction id', async function () {
+  describe('Customer - Create', function () {
+    it('return a customer id', async function () {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         amount: '386.12',
@@ -37,16 +37,13 @@ describe('NMI', function () {
         phone: '9783353373',
       };
 
-      const res = await gateway.chargeCreditCard(data);
+      const res = await gateway.createCustomer(data);
+
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
-      expect(results.response.transactionId).to.be.a('string');
+      expect(results.response.customerId).to.be.a('string');
     });
-
-    // TODO: Try using payment token...
-
-    // TODO: Add Error...
   });
 });

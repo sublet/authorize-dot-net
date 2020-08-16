@@ -1,7 +1,7 @@
 const NMI = require('../../../base/nmi');
 
 /**
- * Charges a Credit Card straight up.
+ * Authorizes a Credit Card so it can be Charged at a later time.
  *
  * @class CreditCard_Charge
  * @extends NMI
@@ -10,7 +10,7 @@ const NMI = require('../../../base/nmi');
  *
  */
 
-class CreditCard_Charge extends NMI {
+class CreditCard_Authorize extends NMI {
   build(data, key) {
     const payload = this.default();
 
@@ -21,6 +21,8 @@ class CreditCard_Charge extends NMI {
     }${data.card.expiration.year.substr(2, 4)}`;
     payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
+
+    if (data.payment_token) payload.payment_token = data.payment_token;
 
     if (data.email) payload.email = data.email;
     if (data.phone) payload.phone = data.phone;
@@ -43,7 +45,8 @@ class CreditCard_Charge extends NMI {
   default() {
     return {
       security_key: null,
-      type: 'sale',
+      type: 'auth',
+      payment_token: null,
       amount: null,
       ccnumber: null,
       ccexp: null,
@@ -96,15 +99,15 @@ class CreditCard_Charge extends NMI {
   }
 
   testResponse() {
-    const str = `
+    var str = `
       response=1&
       responsetext=SUCCESS&
       authcode=123456&
-      transactionid=5575816597&
+      transactionid=5575829138&
       avsresponse=N&
       cvvresponse=M&
       orderid=&
-      type=sale&
+      type=auth&
       response_code=100&
       cc_number=5xxxxxxxxxxx0015&
       customer_vault_id=
@@ -113,4 +116,4 @@ class CreditCard_Charge extends NMI {
   }
 }
 
-module.exports = CreditCard_Charge;
+module.exports = CreditCard_Authorize;

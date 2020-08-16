@@ -41,6 +41,10 @@ class NMI extends Fetch {
     throw new Error('Must inherit this.');
   }
 
+  testResponse() {
+    throw new Error('Must inherit this.');
+  }
+
   // Methods
 
   async process(data, config) {
@@ -82,6 +86,8 @@ class NMI extends Fetch {
   }
 
   async _send() {
+    if (process.env.NODE_ENV === 'test') return this.testResponse()
+    
     const data = querystring.stringify(this._payload);
 
     const response = await this.post(`/v1/request.api`, data);

@@ -38,10 +38,15 @@ class Authorize extends Fetch {
     throw new Error('Must inherit this.');
   }
 
+  testResponse() {
+    throw new Error('Must inherit this.');
+  }
+
   // Methods
 
   async process(data, config) {
     this._uri = config.uri;
+    if (process.env.NODE_ENV === 'test') this._referenceId = data.reference_id;
     data = _.extend(data, config);
     data = deepExtend(this.default(), data);
     this._payload = await this._buildPayload(data);
@@ -93,6 +98,8 @@ class Authorize extends Fetch {
   }
 
   async _send(xmlData) {
+    if (process.env.NODE_ENV === 'test') return this.testResponse()
+
     const response = await this.post(`/v1/request.api`, xmlData);
     if (response) {
       return response;

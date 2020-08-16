@@ -10,7 +10,7 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
-  describe('Credit Card - Charge', function () {
+  describe('Credit Card - Authorize', function () {
     it('should return a transaction id', async function () {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
@@ -33,11 +33,9 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
         },
-        email: 'sublet@me.com',
-        phone: '9783353373',
       };
 
-      const res = await gateway.chargeCreditCard(data);
+      const res = await gateway.authorizeCreditCard(data);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;

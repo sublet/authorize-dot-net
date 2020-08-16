@@ -1,7 +1,7 @@
 const Authorize = require('../../../base/authorize');
 
 /**
- * Authorizes a Credit Card so it can be Charged at a later time.
+ * Capture a previously Authorize Credit Card.
  *
  * @class CreditCard_Authorize
  * @extends Base
@@ -23,7 +23,6 @@ class CreditCard_Capture extends Authorize {
 
   toJsonPayload() {
     const json = this._convertPayloadToJson();
-    console.log(json);
     return json;
   }
 
@@ -62,6 +61,42 @@ class CreditCard_Capture extends Authorize {
       };
     }
     throw new Error('Problem parsing the XML to JSON');
+  }
+
+  testResponse() {
+    return `
+      <?xml version="1.0" encoding="utf-8"?>
+      <createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+        <refId>${this._referenceId}</refId>
+        <messages>
+          <resultCode>Ok</resultCode>
+          <message>
+            <code>I00001</code>
+            <text>Successful.</text>
+          </message>
+        </messages>
+        <transactionResponse>
+          <responseCode>1</responseCode>
+          <authCode>KMBE52</authCode>
+          <avsResultCode>P</avsResultCode>
+          <cvvResultCode />
+          <cavvResultCode />
+          <transId>60148747702</transId>
+          <refTransID>60148747702</refTransID>
+          <transHash />
+          <testRequest>0</testRequest>
+          <accountNumber>XXXX0015</accountNumber>
+          <accountType>MasterCard</accountType>
+          <messages>
+            <message>
+              <code>1</code>
+              <description>This transaction has been approved.</description>
+            </message>
+          </messages>
+          <transHashSha2 />
+        </transactionResponse>
+      </createTransactionResponse>
+    `
   }
 }
 

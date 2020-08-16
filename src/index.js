@@ -65,6 +65,7 @@ class PaymentGateway extends Fetch {
 
   /**
    *
+   * @CreditCard
    * Authorize and Charge a Credit card all at once.
    *
    * @method chargeCreditCard
@@ -96,6 +97,7 @@ class PaymentGateway extends Fetch {
 
   /**
    *
+   * @CreditCard
    * Authorize a card
    *
    * @method authorizeCreditCard
@@ -110,6 +112,8 @@ class PaymentGateway extends Fetch {
    * @param {String} data.card.expiration
    * @param {String} data.card.expiration.month
    * @param {String} data.card.expiration.year
+   * @param {String} data.billing.firstName
+   * @param {String} data.billing.lastName
    */
 
   async authorizeCreditCard(data) {
@@ -127,6 +131,7 @@ class PaymentGateway extends Fetch {
 
   /**
    *
+   * @CreditCard
    * Capture an already authorized credit card.
    *
    * @method captureCreditCard
@@ -141,6 +146,32 @@ class PaymentGateway extends Fetch {
     if (!this._gateway) throw new Error('Gatway not set.');
 
     const response = await this._gateway.card.capture.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Create a Customer
+   *
+   * @method createCustomer
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.invoice_number
+   * @param {String} data.transaction_id
+   */
+  async createCustomer(data) {
+    if (!this._gateway) throw new Error('Gatway not set.');
+
+    const response = await this._gateway.customer.create.process(
       data,
       this._config,
     );
