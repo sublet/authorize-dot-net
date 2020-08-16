@@ -33,8 +33,8 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
         },
-        email: 'sublet@me.com',
-        phone: '9783353373',
+        email: 'yoman@bob.com',
+        phone: '2125551212',
       };
 
       const res = await gateway.chargeCreditCard(data);

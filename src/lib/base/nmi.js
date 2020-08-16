@@ -2,6 +2,11 @@
 const querystring = require('querystring');
 const Fetch = require('./fetch');
 
+/**
+ * NMI Integration:
+ * https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php
+ */
+
 class NMI extends Fetch {
   constructor(type) {
     super();
@@ -86,7 +91,10 @@ class NMI extends Fetch {
   }
 
   async _send() {
-    if (process.env.NODE_ENV === 'test') return this.testResponse();
+    if (process.env.NODE_ENV === 'test') {
+      const testResponse = this.testResponse();
+      if (testResponse) return testResponse
+    }
 
     const data = querystring.stringify(this._payload);
 

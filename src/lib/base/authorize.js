@@ -9,7 +9,13 @@ const mapping = {
   CREATE_TRANSACTION: '../authorize/ejs/credit_card/create.ejs',
   AUTHORIZE_TRANSACTION: '../authorize/ejs/credit_card/authorize.ejs',
   CAPTURE_TRANSACTION: '../authorize/ejs/credit_card/capture.ejs',
+  CREATE_CUSTOMER: '../authorize/ejs/customer/create.ejs',
 };
+
+/**
+ * Authorize.net Integration:
+ * https://developer.authorize.net/api/reference/index.html
+ */
 
 class Authorize extends Fetch {
   constructor(type) {
@@ -98,7 +104,10 @@ class Authorize extends Fetch {
   }
 
   async _send(xmlData) {
-    if (process.env.NODE_ENV === 'test') return this.testResponse();
+    if (process.env.NODE_ENV === 'test') {
+      const testResponse = this.testResponse();
+      if (testResponse) return testResponse
+    }
 
     const response = await this.post(`/v1/request.api`, xmlData);
     if (response) {

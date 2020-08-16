@@ -22,19 +22,19 @@ class Customer_Create extends NMI {
     payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
 
-    if (data.email) payload.email = data.email;
-    if (data.phone) payload.phone = data.phone;
-    if (data.billing.firstName) payload.first_name = data.billing.firstName;
+    if (data.customer.email) payload.email = data.customer.email;
+    if (data.customer.phone) payload.phone = data.customer.phone;
+    if (data.customer.firstName) payload.first_name = data.customer.firstName;
 
-    if (data.billing) {
-      if (data.billing.firstName) payload.first_name = data.billing.firstName;
-      if (data.billing.firstName) payload.last_name = data.billing.lastName;
-      if (data.billing.address) payload.address1 = data.billing.address;
-      if (data.billing.address2) payload.address2 = data.billing.address2;
-      if (data.billing.city) payload.city = data.billing.city;
-      if (data.billing.state) payload.state = data.billing.state;
-      if (data.billing.zip) payload.zip = data.billing.zip;
-      if (data.billing.country) payload.country = data.billing.country;
+    if (data.customer) {
+      if (data.customer.firstName) payload.first_name = data.customer.firstName;
+      if (data.customer.firstName) payload.last_name = data.customer.lastName;
+      if (data.customer.address) payload.address1 = data.customer.address;
+      if (data.customer.address2) payload.address2 = data.customer.address2;
+      if (data.customer.city) payload.city = data.customer.city;
+      if (data.customer.state) payload.state = data.customer.state;
+      if (data.customer.zip) payload.zip = data.customer.zip;
+      if (data.customer.country) payload.country = data.customer.country;
     }
 
     return payload;
