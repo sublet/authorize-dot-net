@@ -36,7 +36,7 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
           phone: '2125551212',
-        }
+        },
       };
 
       const res = await gateway.createCustomer(data);

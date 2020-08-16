@@ -19,7 +19,7 @@ class CreditCard_Charge extends Authorize {
         email: null,
       },
       card: null,
-      isTest: false
+      isTest: false,
     };
   }
 
@@ -27,10 +27,7 @@ class CreditCard_Charge extends Authorize {
     const json = this._convertResponseToJson();
     if (json.createCustomerProfileResponse) {
       const {
-        createCustomerProfileResponse: {
-          messages,
-          customerProfileId,
-        },
+        createCustomerProfileResponse: { messages, customerProfileId },
       } = json;
       let response = {
         isSuccess: false,

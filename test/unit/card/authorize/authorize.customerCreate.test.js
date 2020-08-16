@@ -27,7 +27,7 @@ describe('Authorize.net', function () {
             year: '2020',
           },
         },
-        isTest: true
+        isTest: true,
       };
 
       const res = await gateway.createCustomer(data);

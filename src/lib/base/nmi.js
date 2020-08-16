@@ -93,7 +93,7 @@ class NMI extends Fetch {
   async _send() {
     if (process.env.NODE_ENV === 'test') {
       const testResponse = this.testResponse();
-      if (testResponse) return testResponse
+      if (testResponse) return testResponse;
     }
 
     const data = querystring.stringify(this._payload);
