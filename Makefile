@@ -25,3 +25,9 @@ test-int:
 
 test-all:
 	npm run test
+
+publish:
+	npm publish --access public --dry-run
+
+publish-prod:
+	npm publish --access public
