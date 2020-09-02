@@ -85,7 +85,6 @@ class CreditCard_Authorize extends Authorize {
         messages: this._jsonMessages(messages),
         errors: this._jsonErrors(data.errors),
       };
-      console.log(data)
       if (data.transId._text) {
         response.isSuccess = true;
         response['response'] = {
