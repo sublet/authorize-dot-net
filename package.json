@@ -1,6 +1,6 @@
 {
-  "name": "@simplybail/authorize-dot-net",
-  "version": "1.0.0",
+  "name": "@sublet/authorize-dot-net",
+  "version": "0.0.1",
   "description": "",
   "main": "src/index.js",
   "scripts": {
