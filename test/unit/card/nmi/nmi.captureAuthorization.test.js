@@ -10,6 +10,7 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
+  this.timeout(5000);
   describe('Credit Card - Capture', function () {
     let authorization;
     before(async () => {

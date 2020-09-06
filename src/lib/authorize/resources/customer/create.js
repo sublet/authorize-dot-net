@@ -10,7 +10,7 @@ const Authorize = require('../../../base/authorize');
  *
  */
 
-class CreditCard_Charge extends Authorize {
+class Customer_Create extends Authorize {
   default() {
     return {
       customer: {
@@ -81,4 +81,4 @@ class CreditCard_Charge extends Authorize {
   }
 }
 
-module.exports = CreditCard_Charge;
+module.exports = Customer_Create;

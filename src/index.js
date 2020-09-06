@@ -83,7 +83,7 @@ class PaymentGateway extends Fetch {
    */
 
   async chargeCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.');
+    if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.card.charge.process(
       data,
@@ -117,7 +117,7 @@ class PaymentGateway extends Fetch {
    */
 
   async authorizeCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.');
+    if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.card.authorize.process(
       data,
@@ -143,9 +143,32 @@ class PaymentGateway extends Fetch {
    * @param {String} data.transaction_id
    */
   async captureCreditCard(data) {
-    if (!this._gateway) throw new Error('Gatway not set.');
+    if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.card.capture.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @CreditCard
+   * Refund a Transaction
+   *
+   * @method refundTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.transaction_id
+   */
+  async refundTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.card.refund.process(
       data,
       this._config,
     );
@@ -169,9 +192,37 @@ class PaymentGateway extends Fetch {
    * @param {String} data.transaction_id
    */
   async createCustomer(data) {
-    if (!this._gateway) throw new Error('Gatway not set.');
+    if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.customer.create.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Create a Customer
+   *
+   * @method customerAuthorizeTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.type
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerAuthorizeTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.authorize.process(
       data,
       this._config,
     );

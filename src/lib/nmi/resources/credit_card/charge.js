@@ -6,7 +6,7 @@ const NMI = require('../../../base/nmi');
  * @class CreditCard_Charge
  * @extends NMI
  *
- * https://developer.authorize.net/api/reference/index.html#payment-transactions-charge-a-credit-card
+ * https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php#transaction_variables
  *
  */
 
@@ -14,7 +14,7 @@ class CreditCard_Charge extends NMI {
   build(data, key) {
     const payload = this.default();
 
-    payload.security_key = key;
+    payload.security_key = (data.access_key) ? data.access_key : key;
     (payload.amount = data.amount), (payload.ccnumber = data.card.number);
     payload.ccexp = `${
       data.card.expiration.month

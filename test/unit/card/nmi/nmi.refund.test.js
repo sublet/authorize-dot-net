@@ -10,10 +10,14 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
-  describe('Customer - Create', function () {
-    it('return a customer id', async function () {
+  describe('Credit Card - Charge', function () {
+    this.timeout(5000)
+    let transaction = null
+    before(async () => {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
+        amount: '386.11',
+        invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
           number: '5424000000000015',
           code: '999',
@@ -22,10 +26,7 @@ describe('NMI', function () {
             year: '2020',
           },
         },
-        customer: {
-          id: uuid().replace(/-/g, '').substr(0, 20),
-          email: 'yoman@bob.com',
-          description: 'Customer profile for Yoman Bob',
+        billing: {
           firstName: 'Yoman',
           lastName: 'Bob',
           address: '123 Somewhere St',
@@ -33,17 +34,26 @@ describe('NMI', function () {
           state: 'NY',
           zip: '10001',
           country: 'USA',
-          phone: '2125551212',
         },
+        email: 'yoman@bob.com',
+        phone: '2125551212',
       };
 
-      const res = await gateway.createCustomer(data);
+      const res = await gateway.chargeCreditCard(data);
+      transaction = res.toJson();
+    })
+    it.only('should return a transaction id', async function () {
+      const data = {
+        transaction_id: transaction.response.transactionId,
+      };
 
+      const res = await gateway.refundTransaction(data);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
-      expect(results.referenceId).to.be.equal(data.reference_id);
-      expect(results.response.customerId).to.be.a('string');
+      expect(results.response.transactionId).to.be.a('string');
     });
+
+    // TODO: Add Error...
   });
 });

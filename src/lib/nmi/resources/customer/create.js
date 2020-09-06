@@ -6,7 +6,7 @@ const NMI = require('../../../base/nmi');
  * @class Customer_Create
  * @extends NMI
  *
- * https://developer.authorize.net/api/reference/index.html#payment-transactions-charge-a-credit-card
+ * https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php#cv_variables
  *
  */
 
@@ -14,7 +14,7 @@ class Customer_Create extends NMI {
   build(data, key) {
     const payload = this.default();
 
-    payload.security_key = key;
+    payload.security_key = (data.access_key) ? data.access_key : key;
     (payload.amount = data.amount), (payload.ccnumber = data.card.number);
     payload.ccexp = `${
       data.card.expiration.month
@@ -22,9 +22,10 @@ class Customer_Create extends NMI {
     payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
 
+    if (data.customer_id) payload.customer_vault_id = data.customer_id;
+
     if (data.customer.email) payload.email = data.customer.email;
     if (data.customer.phone) payload.phone = data.customer.phone;
-    if (data.customer.firstName) payload.first_name = data.customer.firstName;
 
     if (data.customer) {
       if (data.customer.firstName) payload.first_name = data.customer.firstName;
@@ -44,6 +45,7 @@ class Customer_Create extends NMI {
     return {
       security_key: null,
       customer_vault: 'add_customer',
+      customer_vault_id: null,
       ccnumber: null,
       ccexp: null,
       cvv: null,
@@ -94,6 +96,7 @@ class Customer_Create extends NMI {
   }
 
   testResponse() {
+    // return null
     return 'response=1&responsetext=Customer Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&cc_number=5xxxxxxxxxxx0015&customer_vault_id=1077659627';
   }
 }
