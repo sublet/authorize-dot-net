@@ -16,15 +16,16 @@ class Customer_Authorize extends NMI {
 
     this.customerVaultId = data.customer_vault_id;
 
-    payload.security_key = (data.access_key) ? data.access_key : key;
+    payload.security_key = data.access_key ? data.access_key : key;
     payload.type = data.type;
     payload.amount = data.amount;
     payload.customer_vault_id = data.customer_vault_id;
     payload.merchant_defined_field_1 = data.reference_id;
     if (data.initiated_by) payload.initiated_by = data.initiated_by;
-    if (data.stored_credential_indicator) payload.stored_credential_indicator = data.stored_credential_indicator;
-    
-    console.log('data: ', data)
+    if (data.stored_credential_indicator)
+      payload.stored_credential_indicator = data.stored_credential_indicator;
+
+    console.log('data: ', data);
 
     return payload;
   }
@@ -37,13 +38,13 @@ class Customer_Authorize extends NMI {
       customer_vault_id: null,
       merchant_defined_field_1: null,
       initiated_by: 'customer',
-      stored_credential_indicator: 'stored'
+      stored_credential_indicator: 'stored',
     };
   }
 
   toJson() {
     const json = this._queryStringToJSON(this._response);
-   
+
     if (json) {
       let response = {
         isSuccess: false,

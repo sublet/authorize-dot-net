@@ -14,7 +14,7 @@ class CreditCard_Charge extends NMI {
   build(data, key) {
     const payload = this.default();
 
-    payload.security_key = (data.access_key) ? data.access_key : key;
+    payload.security_key = data.access_key ? data.access_key : key;
     (payload.amount = data.amount), (payload.ccnumber = data.card.number);
     payload.ccexp = `${
       data.card.expiration.month

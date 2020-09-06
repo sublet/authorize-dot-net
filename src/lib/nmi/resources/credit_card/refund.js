@@ -14,12 +14,12 @@ class CreditCard_Refund extends NMI {
   build(data, key) {
     const payload = this.default();
 
-    if (!data.transaction_id) throw new Error('Transaction ID is invalid.')
+    if (!data.transaction_id) throw new Error('Transaction ID is invalid.');
 
-    payload.security_key = (data.access_key) ? data.access_key : key;
-    payload.transactionid = data.transaction_id
-    payload.void_reason = data.void_reason || 'user_cancel'
-    
+    payload.security_key = data.access_key ? data.access_key : key;
+    payload.transactionid = data.transaction_id;
+    payload.void_reason = data.void_reason || 'user_cancel';
+
     return payload;
   }
 

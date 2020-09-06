@@ -11,8 +11,8 @@ const gateway = require('../../../../src')({
 
 describe('NMI', function () {
   describe('Credit Card - Charge', function () {
-    this.timeout(5000)
-    let transaction = null
+    this.timeout(5000);
+    let transaction = null;
     before(async () => {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
@@ -41,7 +41,7 @@ describe('NMI', function () {
 
       const res = await gateway.chargeCreditCard(data);
       transaction = res.toJson();
-    })
+    });
     it.only('should return a transaction id', async function () {
       const data = {
         transaction_id: transaction.response.transactionId,

@@ -43,24 +43,25 @@ describe('NMI', function () {
       customer = res.toJson();
     });
     it('return a customer id', async function () {
-
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         type: 'auth',
         amount: '386.12',
-        customer_vault_id: customer.response.customerId
+        customer_vault_id: customer.response.customerId,
       };
 
       const res = await gateway.customerAuthorizeTransaction(data);
 
       const results = res.toJson();
 
-      console.log(results)
+      console.log(results);
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.customerId).to.be.a('string');
-      expect(results.response.customerId).to.be.equal(customer.response.customerId);
+      expect(results.response.customerId).to.be.equal(
+        customer.response.customerId,
+      );
     });
   });
 });

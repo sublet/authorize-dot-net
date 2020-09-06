@@ -14,7 +14,7 @@ class CreditCard_Capture extends NMI {
   build(data, key) {
     const payload = this.default();
 
-    payload.security_key = (data.access_key) ? data.access_key : key;
+    payload.security_key = data.access_key ? data.access_key : key;
     payload.transactionid = data.transaction_id;
     payload.amount = data.amount;
     payload.reference_id = data.reference_id;
