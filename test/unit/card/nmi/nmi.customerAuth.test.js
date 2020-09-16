@@ -54,8 +54,6 @@ describe('NMI', function () {
 
       const results = res.toJson();
 
-      console.log(results);
-
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.customerId).to.be.a('string');

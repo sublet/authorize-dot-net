@@ -25,8 +25,6 @@ class Customer_Authorize extends NMI {
     if (data.stored_credential_indicator)
       payload.stored_credential_indicator = data.stored_credential_indicator;
 
-    console.log('data: ', data);
-
     return payload;
   }
 
@@ -52,7 +50,7 @@ class Customer_Authorize extends NMI {
         messages: this._jsonMessages(json),
         errors: this._jsonErrors(null),
       };
-      if (json.customer_vault_id) {
+      if (json.response === '1') {
         response.isSuccess = true;
         response['response'] = {
           authorizationCode: json.authcode,

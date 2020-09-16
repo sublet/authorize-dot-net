@@ -76,7 +76,7 @@ class CreditCard_Authorize extends NMI {
         messages: this._jsonMessages(json),
         errors: this._jsonErrors(null),
       };
-      if (json.transactionid) {
+      if (json.response === '1') {
         response.isSuccess = true;
         response['response'] = {
           authorizationCode: json.authcode,
