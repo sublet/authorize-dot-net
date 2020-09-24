@@ -23,6 +23,14 @@ class CreditCard_Authorize extends NMI {
     payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
 
+    let i = 1;
+    data.custom_fields.forEach(field => {
+      if (field.key && field.value && i <= 10) {
+        payload[`merchant_defined_field_${i + 1}`] = JSON.stringify(field);
+        i++;
+      }
+    });
+
     if (data.payment_token) payload.payment_token = data.payment_token;
 
     if (data.email) payload.email = data.email;
@@ -114,6 +122,15 @@ class CreditCard_Authorize extends NMI {
       customer_vault_id=
     `;
     return str.replace(/  |\r\n|\n|\r/gm, ''); // eslint-disable-line
+  }
+
+  _isJson(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }
 

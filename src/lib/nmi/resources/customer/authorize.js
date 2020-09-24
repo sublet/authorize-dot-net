@@ -21,9 +21,20 @@ class Customer_Authorize extends NMI {
     payload.amount = data.amount;
     payload.customer_vault_id = data.customer_vault_id;
     payload.merchant_defined_field_1 = data.reference_id;
+
+    let i = 1;
+    data.custom_fields.forEach(field => {
+      if (field.key && field.value && i <= 10) {
+        payload[`merchant_defined_field_${i + 1}`] = JSON.stringify(field);
+        i++;
+      }
+    });
+
     if (data.initiated_by) payload.initiated_by = data.initiated_by;
     if (data.stored_credential_indicator)
       payload.stored_credential_indicator = data.stored_credential_indicator;
+
+    console.log(payload);
 
     return payload;
   }

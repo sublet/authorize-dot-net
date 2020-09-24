@@ -48,6 +48,10 @@ describe('NMI', function () {
         type: 'auth',
         amount: '386.12',
         customer_vault_id: customer.response.customerId,
+        custom_fields: [
+          { key: 'invoice_id', value: '1234' },
+          { key: 'other_ud', value: '5678' },
+        ],
       };
 
       const res = await gateway.customerAuthorizeTransaction(data);

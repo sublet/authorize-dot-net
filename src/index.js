@@ -53,7 +53,7 @@ class PaymentGateway extends Fetch {
             : 'https://apitest.authorize.net/xml';
       } else if (this._config.gateway === 'NMI') {
         this._gateway = nmi;
-        uri = 'https://secure.networkmerchants.com/api/transact.php';
+        uri = 'https://secure.networkmerchants.com';
       }
       this._config.uri = uri;
     }
@@ -223,6 +223,28 @@ class PaymentGateway extends Fetch {
     if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.customer.authorize.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Transaction
+   * Find Transactions
+   *
+   * @method fetchTransactions
+   *
+   * @param {Object} data
+   */
+  async fetchTransactions(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.transaction.search.search(
       data,
       this._config,
     );

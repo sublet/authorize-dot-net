@@ -62,6 +62,16 @@ class NMI extends Fetch {
     throw new Error('Payload could not be generated.');
   }
 
+  async search(data, config) {
+    this._uri = config.uri;
+    this._payload = this.build(data, config.key);
+    if (this._payload) {
+      this._response = await this._query();
+      return this;
+    }
+    throw new Error('Payload could not be generated.');
+  }
+
   get payload() {
     return this._payload;
   }
@@ -97,8 +107,21 @@ class NMI extends Fetch {
     }
 
     const data = querystring.stringify(this._payload);
+    const response = await this.post(`/api/transact.php`, data);
+    if (response) {
+      return response;
+    }
+    throw new Error('Response is invalid');
+  }
 
-    const response = await this.post(`/v1/request.api`, data);
+  async _query() {
+    if (process.env.NODE_ENV === 'test') {
+      const testResponse = this.testResponse();
+      if (testResponse) return testResponse;
+    }
+
+    const data = querystring.stringify(this._payload);
+    const response = await this.post(`/api/query.php`, data);
     if (response) {
       return response;
     }

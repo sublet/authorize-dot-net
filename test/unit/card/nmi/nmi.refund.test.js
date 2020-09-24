@@ -42,7 +42,7 @@ describe('NMI', function () {
       const res = await gateway.chargeCreditCard(data);
       transaction = res.toJson();
     });
-    it.only('should return a transaction id', async function () {
+    it('should return a transaction id', async function () {
       const data = {
         transaction_id: transaction.response.transactionId,
       };
