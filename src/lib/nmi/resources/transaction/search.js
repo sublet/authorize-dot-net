@@ -89,7 +89,6 @@ class Transaction_Search extends NMI {
             },
             custom_fields,
             actions: itm.action.map(action => {
-              console.log(action);
               return {
                 batch_id: action.batch_id._text,
                 amount: action.amount._text,

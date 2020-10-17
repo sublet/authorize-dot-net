@@ -152,7 +152,7 @@ class PaymentGateway extends Fetch {
     if (response) {
       return response;
     }
-    throw new Error('There was a problem authorizing the card.');
+    throw new Error('There was a problem capturing the card.');
   }
 
   /**
@@ -175,7 +175,30 @@ class PaymentGateway extends Fetch {
     if (response) {
       return response;
     }
-    throw new Error('There was a problem authorizing the card.');
+    throw new Error('There was a problem running the return.');
+  }
+
+  /**
+   *
+   * @CreditCard
+   * Void a Transaction
+   *
+   * @method refundTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.transaction_id
+   */
+  async voidTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.card.void.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem voiding the card.');
   }
 
   /**

@@ -11,7 +11,7 @@ const gateway = require('../../../../src')({
 
 // https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php#query_variables
 
-describe.only('NMI', function () {
+describe('NMI', function () {
   describe('Transaction - Search', function () {
     it('find transctions', async function () {
       const data = {

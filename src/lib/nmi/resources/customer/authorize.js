@@ -34,8 +34,6 @@ class Customer_Authorize extends NMI {
     if (data.stored_credential_indicator)
       payload.stored_credential_indicator = data.stored_credential_indicator;
 
-    console.log(payload);
-
     return payload;
   }
 
