@@ -9,5 +9,5 @@ module.exports = {
   authorize: new CreditCard_Authorize('AUTHORIZE_TRANSACTION'),
   capture: new CreditCard_Capture('CAPTURE_TRANSACTION'),
   refund: new CreditCard_Refund('REFUND_TRANSACTION'),
-  void: new CreditCard_Void('VOID_TRANSACTION')
+  void: new CreditCard_Void('VOID_TRANSACTION'),
 };

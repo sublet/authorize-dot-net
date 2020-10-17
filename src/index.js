@@ -191,10 +191,7 @@ class PaymentGateway extends Fetch {
   async voidTransaction(data) {
     if (!this._gateway) throw new Error('Gateway not set.');
 
-    const response = await this._gateway.card.void.process(
-      data,
-      this._config,
-    );
+    const response = await this._gateway.card.void.process(data, this._config);
     if (response) {
       return response;
     }

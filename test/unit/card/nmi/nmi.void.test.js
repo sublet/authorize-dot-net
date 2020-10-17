@@ -50,7 +50,9 @@ describe('NMI', function () {
 
       expect(results.isSuccess).to.be.true;
       expect(results.response.transactionId).to.be.a('string');
-      expect(results.messages.responseCode).to.equal('Transaction Void Successful');
+      expect(results.messages.responseCode).to.equal(
+        'Transaction Void Successful',
+      );
     });
 
     // TODO: Add Error...
