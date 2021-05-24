@@ -9,7 +9,7 @@ const gateway = require('../../../../src')({
   gateway: 'NMI',
 });
 
-const currentPlanId = uuid()
+const currentPlanId = uuid();
 
 describe('NMI', function () {
   describe('Recurring - Plan Create', function () {
@@ -20,8 +20,8 @@ describe('NMI', function () {
         plan_name: 'Payment Plan for Yoman Bob',
         plan_id: currentPlanId,
         frequency_type: 'DAYS',
-        frequency_amount: 7
-      }
+        frequency_amount: 7,
+      };
 
       const res = await gateway.createRecurringPlan(data);
 
@@ -32,13 +32,13 @@ describe('NMI', function () {
     });
     it('return an error due to not having required fields', async function () {
       const data = {
-        plan_payments: 4
-      }
+        plan_payments: 4,
+      };
 
       try {
-        await gateway.createRecurringPlan(data)
-        expect(true, "This worked when it should not have").to.be.equal(false)
-      } catch(e) {
+        await gateway.createRecurringPlan(data);
+        expect(true, 'This worked when it should not have').to.be.equal(false);
+      } catch (e) {
         expect(e.message).to.be.equal('plan_amount is a required value');
       }
     });
@@ -49,13 +49,13 @@ describe('NMI', function () {
         plan_name: 'Payment Plan for Yoman Bob',
         plan_id: uuid(),
         frequency_type: 'DAYS',
-        frequency_amount: 7
-      }
+        frequency_amount: 7,
+      };
 
       try {
-        await gateway.createRecurringPlan(data)
-        expect(true, "This worked when it should not have").to.be.equal(false)
-      } catch(e) {
+        await gateway.createRecurringPlan(data);
+        expect(true, 'This worked when it should not have').to.be.equal(false);
+      } catch (e) {
         expect(e.message).to.be.equal('plan_payments must be an Integer: 4');
       }
     });
@@ -65,8 +65,8 @@ describe('NMI', function () {
       const data = {
         current_plan_id: currentPlanId,
         plan_payments: 10,
-        plan_amount: 100.0
-      }
+        plan_amount: 100.0,
+      };
 
       const res = await gateway.editRecurringPlan(data);
 

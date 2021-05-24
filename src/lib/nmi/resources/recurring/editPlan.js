@@ -2,54 +2,57 @@ const allowed = [
   {
     slug: 'current_plan_id',
     type: 'STRING',
-    description: 'Only relevant for editing an existing plan, the value will be the \'plan_id\' that will be edited in this request.',
+    description:
+      "Only relevant for editing an existing plan, the value will be the 'plan_id' that will be edited in this request.",
     notes: '0 for until canceled',
-    isRequired: true
+    isRequired: true,
   },
   {
     slug: 'plan_payments',
     type: 'INTEGER',
-    description: 'The number of payments before the recurring plan is complete.',
+    description:
+      'The number of payments before the recurring plan is complete.',
     notes: '0 for until canceled',
-    isRequired: true
+    isRequired: true,
   },
   {
     slug: 'plan_amount',
     type: 'FLOAT',
     description: 'The plan amount to be charged each billing cycle.',
     notes: 'Format: x.xx',
-    isRequired: false
+    isRequired: false,
   },
   {
     slug: 'plan_name',
     type: 'STRING',
     description: 'The display name of the plan.',
     notes: '',
-    isRequired: false
+    isRequired: false,
   },
   {
     slug: 'plan_id',
     type: 'STRING',
     description: 'The unique plan ID that references only this recurring plan.',
     notes: '',
-    isRequired: false
+    isRequired: false,
   },
   {
     slug: 'frequency_type',
     type: 'ENUM',
-    values: ['DAYS','MONTHS','DAY_OF_MONTH'],
-    description: 'How often, in days, to charge the customer. For DAY_OF_MONTH the values are 1 through 31 - for months without 29, 30, or 31 days, the charge will be on the last day',
+    values: ['DAYS', 'MONTHS', 'DAY_OF_MONTH'],
+    description:
+      'How often, in days, to charge the customer. For DAY_OF_MONTH the values are 1 through 31 - for months without 29, 30, or 31 days, the charge will be on the last day',
     notes: '',
-    isRequired: false
+    isRequired: false,
   },
   {
     slug: 'frequency_amount',
     type: 'INTEGER',
     description: 'The plan amount to be charged each billing cycle.',
     notes: 'For 7 days, enter 7 here and pass in DAYS for frequency_type.',
-    isRequired: false
-  }
-]
+    isRequired: false,
+  },
+];
 
 const NMI = require('../../../base/nmi');
 const types = require('../../../types');
@@ -68,34 +71,40 @@ class Recurring_PlanCreate extends NMI {
   build(params, key) {
     const payload = this.default();
 
-    types.checkAllowed(params, allowed)
+    types.checkAllowed(params, allowed);
 
     allowed.forEach(itm => {
-      if (['frequency_type','frequency_amount'].indexOf(itm.slug) < 0) {
-        payload[itm.slug] = params[itm.slug]
+      if (['frequency_type', 'frequency_amount'].indexOf(itm.slug) < 0) {
+        payload[itm.slug] = params[itm.slug];
       }
-    })
+    });
 
     if (params.frequency_type && params.frequency_amount) {
       if (params.frequency_type === 'DAYS') {
-        payload.day_frequency = params.frequency_amount
+        payload.day_frequency = params.frequency_amount;
       } else if (params.frequency_type === 'MONTHS') {
-        payload.month_frequency = params.frequency_amount
+        payload.month_frequency = params.frequency_amount;
       } else if (params.frequency_type === 'DAY_OF_MONTH') {
-        payload.day_of_month = params.frequency_amount
+        payload.day_of_month = params.frequency_amount;
       } else {
-        throw new Error('You shouldn\'t be here.')
+        throw new Error("You shouldn't be here.");
       }
     } else if (params.frequency_type && !params.frequency_amount) {
-      throw new Error('If you pass a frequency type, you must pass a frequency amount.')
+      throw new Error(
+        'If you pass a frequency type, you must pass a frequency amount.',
+      );
     } else if (!params.frequency_type && params.frequency_amount) {
-      throw new Error('If you pass a frequency amount, you must pass a frequency type.')
+      throw new Error(
+        'If you pass a frequency amount, you must pass a frequency type.',
+      );
     }
 
     payload.security_key = params.access_key ? params.access_key : key;
 
     // cleanup
-    Object.keys(payload).forEach(k => { if (!payload[k]) delete payload[k] })
+    Object.keys(payload).forEach(k => {
+      if (!payload[k]) delete payload[k];
+    });
 
     return payload;
   }
@@ -111,7 +120,7 @@ class Recurring_PlanCreate extends NMI {
       plan_id: null,
       day_frequency: null,
       month_frequency: null,
-      day_of_month: null
+      day_of_month: null,
     };
   }
 
@@ -126,7 +135,7 @@ class Recurring_PlanCreate extends NMI {
       if (json.response_code === '100') {
         response.isSuccess = true;
         response['response'] = {
-          message: json.responsetext
+          message: json.responsetext,
         };
       }
       return response;
