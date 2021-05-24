@@ -273,6 +273,63 @@ class PaymentGateway extends Fetch {
     }
     throw new Error('There was a problem authorizing the card.');
   }
+
+  /**
+   *
+   * @Recurring
+   * Create a Recurring Plan
+   *
+   * @method createRecurringPlan
+   *
+   * @param {Object} data
+   * @param {Integer} data.plan_payments
+   * @param {Float} data.plan_amount
+   * @param {String} data.plan_name
+   * @param {String} data.plan_id
+   * @param {Enum} data.frequency_type
+   * @param {Integer} data.frequency_amount
+   */
+  async createRecurringPlan(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.recurring.create_plan.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Recurring
+   * Edit a Recurring Plan
+   *
+   * @method editRecurringPlan
+   *
+   * @param {Object} data
+   * @param {String} data.current_plan_id
+   * @param {Integer} data.plan_payments
+   * @param {Float} data.plan_amount
+   * @param {String} data.plan_name
+   * @param {String} data.plan_id
+   * @param {Enum} data.frequency_type
+   * @param {Integer} data.frequency_amount
+   */
+  async editRecurringPlan(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.recurring.edit_plan.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
 }
 
 module.exports = config => new PaymentGateway(config);
