@@ -86,8 +86,6 @@ class Recurring_PlanCreate extends NMI {
       if (!payload[k]) delete payload[k];
     });
 
-    console.log(payload);
-
     return payload;
   }
 

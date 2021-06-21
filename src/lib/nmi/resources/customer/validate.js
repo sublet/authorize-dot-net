@@ -51,8 +51,6 @@ class Customer_CardValidate extends NMI {
   toJson() {
     const json = this._queryStringToJSON(this._response);
 
-    console.log(json)
-
     if (json) {
       let response = {
         isSuccess: false,

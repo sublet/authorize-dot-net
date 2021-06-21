@@ -30,7 +30,8 @@ class Customer_Authorize extends NMI {
       }
     });
 
-    if (data.order_description) payload.order_description = data.order_description;
+    if (data.order_description)
+      payload.order_description = data.order_description;
     if (data.order_id) payload.orderid = data.order_id;
     if (data.initiated_by) payload.initiated_by = data.initiated_by;
     if (data.stored_credential_indicator)
