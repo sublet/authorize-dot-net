@@ -233,9 +233,9 @@ class PaymentGateway extends Fetch {
    *
    * @param {Object} data
    * @param {String} data.reference_id
-   * @param {String} data.type
    * @param {String} data.amount
    * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
    * @param {String} data.initiated_by
    * @param {String} data.stored_credential_indicator
    */
@@ -243,6 +243,62 @@ class PaymentGateway extends Fetch {
     if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.customer.authorize.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Charge Transaction without Authorization
+   *
+   * @method customerChargeTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerChargeTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.charge.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Validate Customer card without actually authorizing the charge
+   *
+   * @method customerCardValidate
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerCardValidate(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.validate.process(
       data,
       this._config,
     );

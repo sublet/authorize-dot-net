@@ -15,12 +15,25 @@ class CreditCard_Charge extends NMI {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
-    (payload.amount = data.amount), (payload.ccnumber = data.card.number);
+    payload.amount = data.amount;
+    payload.ccnumber = data.card.number;
     payload.ccexp = `${
       data.card.expiration.month
     }${data.card.expiration.year.substr(2, 4)}`;
     payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
+
+    if (data.custom_fields) {
+      let i = 1;
+      data.custom_fields.forEach(field => {
+        if (field.key && field.value && i <= 10) {
+          payload[`merchant_defined_field_${i + 1}`] = JSON.stringify(field);
+          i++;
+        }
+      });
+    }
+
+    if (data.payment_token) payload.payment_token = data.payment_token;
 
     if (data.email) payload.email = data.email;
     if (data.phone) payload.phone = data.phone;
