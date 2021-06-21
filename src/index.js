@@ -53,7 +53,7 @@ class PaymentGateway extends Fetch {
             : 'https://apitest.authorize.net/xml';
       } else if (this._config.gateway === 'NMI') {
         this._gateway = nmi;
-        uri = 'https://secure.networkmerchants.com/api/transact.php';
+        uri = 'https://secure.networkmerchants.com';
       }
       this._config.uri = uri;
     }
@@ -152,7 +152,7 @@ class PaymentGateway extends Fetch {
     if (response) {
       return response;
     }
-    throw new Error('There was a problem authorizing the card.');
+    throw new Error('There was a problem capturing the card.');
   }
 
   /**
@@ -175,7 +175,27 @@ class PaymentGateway extends Fetch {
     if (response) {
       return response;
     }
-    throw new Error('There was a problem authorizing the card.');
+    throw new Error('There was a problem running the return.');
+  }
+
+  /**
+   *
+   * @CreditCard
+   * Void a Transaction
+   *
+   * @method refundTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.transaction_id
+   */
+  async voidTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.card.void.process(data, this._config);
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem voiding the card.');
   }
 
   /**
@@ -213,9 +233,9 @@ class PaymentGateway extends Fetch {
    *
    * @param {Object} data
    * @param {String} data.reference_id
-   * @param {String} data.type
    * @param {String} data.amount
    * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
    * @param {String} data.initiated_by
    * @param {String} data.stored_credential_indicator
    */
@@ -223,6 +243,141 @@ class PaymentGateway extends Fetch {
     if (!this._gateway) throw new Error('Gateway not set.');
 
     const response = await this._gateway.customer.authorize.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Charge Transaction without Authorization
+   *
+   * @method customerChargeTransaction
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerChargeTransaction(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.charge.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Customer
+   * Validate Customer card without actually authorizing the charge
+   *
+   * @method customerCardValidate
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerCardValidate(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.validate.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Transaction
+   * Find Transactions
+   *
+   * @method fetchTransactions
+   *
+   * @param {Object} data
+   */
+  async fetchTransactions(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.transaction.search.search(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Recurring
+   * Create a Recurring Plan
+   *
+   * @method createRecurringPlan
+   *
+   * @param {Object} data
+   * @param {Integer} data.plan_payments
+   * @param {Float} data.plan_amount
+   * @param {String} data.plan_name
+   * @param {String} data.plan_id
+   * @param {Enum} data.frequency_type
+   * @param {Integer} data.frequency_amount
+   */
+  async createRecurringPlan(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.recurring.create_plan.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
+   * @Recurring
+   * Edit a Recurring Plan
+   *
+   * @method editRecurringPlan
+   *
+   * @param {Object} data
+   * @param {String} data.current_plan_id
+   * @param {Integer} data.plan_payments
+   * @param {Float} data.plan_amount
+   * @param {String} data.plan_name
+   * @param {String} data.plan_id
+   * @param {Enum} data.frequency_type
+   * @param {Integer} data.frequency_amount
+   */
+  async editRecurringPlan(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.recurring.edit_plan.process(
       data,
       this._config,
     );

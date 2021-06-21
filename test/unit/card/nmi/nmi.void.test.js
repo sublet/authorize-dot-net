@@ -10,13 +10,13 @@ const gateway = require('../../../../src')({
 });
 
 describe('NMI', function () {
-  describe('Credit Card - Refund', function () {
+  describe('Credit Card - Void', function () {
     this.timeout(5000);
     let transaction = null;
     before(async () => {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
-        amount: '386.11',
+        amount: '386.12',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
           number: '5424000000000015',
@@ -35,11 +35,9 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
         },
-        email: 'yoman@bob.com',
-        phone: '2125551212',
       };
 
-      const res = await gateway.chargeCreditCard(data);
+      const res = await gateway.authorizeCreditCard(data);
       transaction = res.toJson();
     });
     it('should return a transaction id', async function () {
@@ -47,11 +45,14 @@ describe('NMI', function () {
         transaction_id: transaction.response.transactionId,
       };
 
-      const res = await gateway.refundTransaction(data);
+      const res = await gateway.voidTransaction(data);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
       expect(results.response.transactionId).to.be.a('string');
+      expect(results.messages.responseCode).to.equal(
+        'Transaction Void Successful',
+      );
     });
 
     // TODO: Add Error...

@@ -15,7 +15,8 @@ class Customer_Create extends NMI {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
-    (payload.amount = data.amount), (payload.ccnumber = data.card.number);
+    payload.amount = data.amount;
+    payload.ccnumber = data.card.number;
     payload.ccexp = `${
       data.card.expiration.month
     }${data.card.expiration.year.substr(2, 4)}`;

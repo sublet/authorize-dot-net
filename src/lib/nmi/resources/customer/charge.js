@@ -1,23 +1,22 @@
 const NMI = require('../../../base/nmi');
 
 /**
- * Authorize a charge on a customers card stored in the vault.
+ * Do a Direct Sale on a customers card stored in the vault.
  *
- * @class Customer_Authorize
+ * @class Customer_Charge
  * @extends NMI
  *
  * https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php#cv_variables
  *
  */
 
-class Customer_Authorize extends NMI {
+class Customer_Charge extends NMI {
   build(data, key) {
     const payload = this.default();
 
     this.customerVaultId = data.customer_vault_id;
 
     payload.security_key = data.access_key ? data.access_key : key;
-    payload.type = data.type;
     payload.amount = data.amount;
     payload.customer_vault_id = data.customer_vault_id;
     payload.merchant_defined_field_1 = data.reference_id;
@@ -43,7 +42,7 @@ class Customer_Authorize extends NMI {
   default() {
     return {
       security_key: null,
-      type: 'auth',
+      type: 'sale',
       amount: null,
       order_description: null,
       customer_vault_id: null,
@@ -92,4 +91,4 @@ class Customer_Authorize extends NMI {
   }
 }
 
-module.exports = Customer_Authorize;
+module.exports = Customer_Charge;
