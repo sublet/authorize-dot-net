@@ -1,6 +1,6 @@
 {
   "name": "@sublet/authorize-dot-net",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Authorize.net and NMI Library for handling payments.",
   "main": "src/index.js",
   "scripts": {

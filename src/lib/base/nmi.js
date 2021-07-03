@@ -86,6 +86,7 @@ class NMI extends Fetch {
 
   _jsonMessages(json) {
     return {
+      response: json.response,
       responseCode: json.responsetext,
       code: json.response_code,
       message: json.responsetext,

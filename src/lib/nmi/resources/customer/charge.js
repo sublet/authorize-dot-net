@@ -17,17 +17,20 @@ class Customer_Charge extends NMI {
     this.customerVaultId = data.customer_vault_id;
 
     payload.security_key = data.access_key ? data.access_key : key;
+    payload.test_mode = (data.test_mode !== undefined) ? data.test_mode : false;
     payload.amount = data.amount;
     payload.customer_vault_id = data.customer_vault_id;
     payload.merchant_defined_field_1 = data.reference_id;
 
-    let i = 1;
-    data.custom_fields.forEach(field => {
-      if (field.key && field.value && i <= 10) {
-        payload[`merchant_defined_field_${i + 1}`] = JSON.stringify(field);
-        i++;
-      }
-    });
+    if (data.custom_fields && data.custom_fields.length) {
+      let i = 1;
+      data.custom_fields.forEach(field => {
+        if (field.key && field.value && i <= 10) {
+          payload[`merchant_defined_field_${i + 1}`] = JSON.stringify(field);
+          i++;
+        }
+      });
+    }
 
     if (data.order_description)
       payload.order_description = data.order_description;
@@ -42,6 +45,7 @@ class Customer_Charge extends NMI {
   default() {
     return {
       security_key: null,
+      test_mode: false,
       type: 'sale',
       amount: null,
       order_description: null,
