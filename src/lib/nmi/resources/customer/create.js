@@ -15,7 +15,7 @@ class Customer_Create extends NMI {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
-    payload.test_mode = (data.test_mode !== undefined) ? data.test_mode : false;
+    payload.test_mode = data.test_mode !== undefined ? data.test_mode : false;
     payload.amount = data.amount;
     payload.ccnumber = data.card.number;
     payload.ccexp = `${

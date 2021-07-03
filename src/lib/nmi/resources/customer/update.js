@@ -95,7 +95,7 @@ class Customer_Update extends NMI {
   }
 
   testResponse() {
-    return null
+    return null;
     // return 'response=1&responsetext=Customer Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&cc_number=5xxxxxxxxxxx0015&customer_vault_id=1077659627';
   }
 }
