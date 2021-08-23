@@ -25,7 +25,7 @@ class Customer_Create extends NMI {
       payload.ccexp = `${
         data.card.expiration.month
       }${data.card.expiration.year.substr(2, 4)}`;
-      payload.cvv = data.card.code;  
+      payload.cvv = data.card.code;
     }
     payload.merchant_defined_field_1 = data.reference_id;
 

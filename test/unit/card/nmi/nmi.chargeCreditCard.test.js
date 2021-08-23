@@ -36,7 +36,7 @@ describe('NMI', function () {
         },
         email: 'yoman@bob.com',
         phone: '2125551212',
-        customer_vault: 'add_customer'
+        customer_vault: 'add_customer',
       };
 
       const res = await gateway.chargeCreditCard(data);

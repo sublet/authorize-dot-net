@@ -15,7 +15,7 @@ class Customer_Update extends NMI {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
-    
+
     if (data.payment_token && data.payment_token !== '') {
       payload.payment_token = data.payment_token;
     } else {
@@ -23,15 +23,15 @@ class Customer_Update extends NMI {
       payload.ccexp = `${
         data.card.expiration.month
       }${data.card.expiration.year.substr(2, 4)}`;
-      payload.cvv = data.card.code;  
+      payload.cvv = data.card.code;
     }
-    
+
     payload.merchant_defined_field_1 = data.reference_id;
 
     if (data.customer_id) {
       payload.customer_vault_id = data.customer_id;
     } else {
-      payload.customer_vault = 'add_customer'
+      payload.customer_vault = 'add_customer';
     }
 
     if (data.customer) {
@@ -47,7 +47,7 @@ class Customer_Update extends NMI {
       if (data.customer.country) payload.country = data.customer.country;
     }
 
-    console.log('Incoming Payload: ', payload)
+    console.log('Incoming Payload: ', payload);
 
     return payload;
   }

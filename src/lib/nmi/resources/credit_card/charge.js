@@ -53,8 +53,9 @@ class CreditCard_Charge extends NMI {
       if (data.billing.country) payload.country = data.billing.country;
     }
 
-    if (data.customer_vault) payload.customer_vault = data.customer_vault
-    if (data.customer_vault_id) payload.customer_vault_id = data.customer_vault_id
+    if (data.customer_vault) payload.customer_vault = data.customer_vault;
+    if (data.customer_vault_id)
+      payload.customer_vault_id = data.customer_vault_id;
 
     return payload;
   }
