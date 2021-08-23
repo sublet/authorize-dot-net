@@ -10,13 +10,11 @@ const NMI = require('../../../base/nmi');
  *
  */
 
-class Customer_Create extends NMI {
+class Customer_Update extends NMI {
   build(data, key) {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
-    payload.test_mode = data.test_mode !== undefined ? data.test_mode : false;
-    // payload.amount = data.amount;
 
     if (data.payment_token && data.payment_token !== '') {
       payload.payment_token = data.payment_token;
@@ -27,14 +25,18 @@ class Customer_Create extends NMI {
       }${data.card.expiration.year.substr(2, 4)}`;
       payload.cvv = data.card.code;
     }
+
     payload.merchant_defined_field_1 = data.reference_id;
 
-    if (data.customer_id) payload.customer_vault_id = data.customer_id;
-
-    if (data.customer.email) payload.email = data.customer.email;
-    if (data.customer.phone) payload.phone = data.customer.phone;
+    if (data.customer_id) {
+      payload.customer_vault_id = data.customer_id;
+    } else {
+      payload.customer_vault = 'add_customer';
+    }
 
     if (data.customer) {
+      if (data.customer.email) payload.email = data.customer.email;
+      if (data.customer.phone) payload.phone = data.customer.phone;
       if (data.customer.firstName) payload.first_name = data.customer.firstName;
       if (data.customer.firstName) payload.last_name = data.customer.lastName;
       if (data.customer.address) payload.address1 = data.customer.address;
@@ -45,14 +47,15 @@ class Customer_Create extends NMI {
       if (data.customer.country) payload.country = data.customer.country;
     }
 
+    console.log('Incoming Payload: ', payload);
+
     return payload;
   }
 
   default() {
     return {
       security_key: null,
-      test_mode: false,
-      customer_vault: 'add_customer',
+      customer_vault: 'update_customer',
       customer_vault_id: null,
       ccnumber: null,
       ccexp: null,
@@ -104,9 +107,9 @@ class Customer_Create extends NMI {
   }
 
   testResponse() {
-    // return null
-    return 'response=1&responsetext=Customer Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&cc_number=5xxxxxxxxxxx0015&customer_vault_id=1077659627';
+    return null;
+    // return 'response=1&responsetext=Customer Added&authcode=&transactionid=&avsresponse=&cvvresponse=&orderid=&type=&response_code=100&cc_number=5xxxxxxxxxxx0015&customer_vault_id=1077659627';
   }
 }
 
-module.exports = Customer_Create;
+module.exports = Customer_Update;

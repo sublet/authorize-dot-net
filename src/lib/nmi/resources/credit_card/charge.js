@@ -15,13 +15,19 @@ class CreditCard_Charge extends NMI {
     const payload = this.default();
 
     payload.security_key = data.access_key ? data.access_key : key;
+
     payload.amount = data.amount;
-    payload.ccnumber = data.card.number;
-    payload.ccexp = `${
-      data.card.expiration.month
-    }${data.card.expiration.year.substr(2, 4)}`;
-    payload.cvv = data.card.code;
     payload.merchant_defined_field_1 = data.reference_id;
+
+    if (data.payment_token && data.payment_token !== '') {
+      payload.payment_token = data.payment_token;
+    } else {
+      payload.ccnumber = data.card.number;
+      payload.ccexp = `${
+        data.card.expiration.month
+      }${data.card.expiration.year.substr(2, 4)}`;
+      payload.cvv = data.card.code;
+    }
 
     if (data.custom_fields) {
       let i = 1;
@@ -33,15 +39,12 @@ class CreditCard_Charge extends NMI {
       });
     }
 
-    if (data.payment_token) payload.payment_token = data.payment_token;
-
     if (data.email) payload.email = data.email;
     if (data.phone) payload.phone = data.phone;
-    if (data.billing.firstName) payload.first_name = data.billing.firstName;
 
     if (data.billing) {
       if (data.billing.firstName) payload.first_name = data.billing.firstName;
-      if (data.billing.firstName) payload.last_name = data.billing.lastName;
+      if (data.billing.lastName) payload.last_name = data.billing.lastName;
       if (data.billing.address) payload.address1 = data.billing.address;
       if (data.billing.address2) payload.address2 = data.billing.address2;
       if (data.billing.city) payload.city = data.billing.city;
@@ -49,6 +52,10 @@ class CreditCard_Charge extends NMI {
       if (data.billing.zip) payload.zip = data.billing.zip;
       if (data.billing.country) payload.country = data.billing.country;
     }
+
+    if (data.customer_vault) payload.customer_vault = data.customer_vault;
+    if (data.customer_vault_id)
+      payload.customer_vault_id = data.customer_vault_id;
 
     return payload;
   }
@@ -89,7 +96,8 @@ class CreditCard_Charge extends NMI {
         response.isSuccess = true;
         response['response'] = {
           authorizationCode: json.authcode,
-          transactionId: json.transactionid,
+          transactionId: json.transactionid || null,
+          customerId: json.customer_vault_id,
           transactionHash: null,
         };
       }

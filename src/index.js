@@ -310,6 +310,34 @@ class PaymentGateway extends Fetch {
 
   /**
    *
+   * @Customer
+   * Update Customer Card on File
+   *
+   * @method customerUpdateCard
+   *
+   * @param {Object} data
+   * @param {String} data.reference_id
+   * @param {String} data.amount
+   * @param {String} data.customer_vault_id
+   * @param {String} data.order_id
+   * @param {String} data.initiated_by
+   * @param {String} data.stored_credential_indicator
+   */
+  async customerUpdateCard(data) {
+    if (!this._gateway) throw new Error('Gateway not set.');
+
+    const response = await this._gateway.customer.update.process(
+      data,
+      this._config,
+    );
+    if (response) {
+      return response;
+    }
+    throw new Error('There was a problem authorizing the card.');
+  }
+
+  /**
+   *
    * @Transaction
    * Find Transactions
    *
