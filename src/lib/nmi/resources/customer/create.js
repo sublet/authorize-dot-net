@@ -16,12 +16,17 @@ class Customer_Create extends NMI {
 
     payload.security_key = data.access_key ? data.access_key : key;
     payload.test_mode = data.test_mode !== undefined ? data.test_mode : false;
-    payload.amount = data.amount;
-    payload.ccnumber = data.card.number;
-    payload.ccexp = `${
-      data.card.expiration.month
-    }${data.card.expiration.year.substr(2, 4)}`;
-    payload.cvv = data.card.code;
+    // payload.amount = data.amount;
+
+    if (data.payment_token && data.payment_token !== '') {
+      payload.payment_token = data.payment_token;
+    } else {
+      payload.ccnumber = data.card.number;
+      payload.ccexp = `${
+        data.card.expiration.month
+      }${data.card.expiration.year.substr(2, 4)}`;
+      payload.cvv = data.card.code;  
+    }
     payload.merchant_defined_field_1 = data.reference_id;
 
     if (data.customer_id) payload.customer_vault_id = data.customer_id;

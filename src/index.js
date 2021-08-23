@@ -313,7 +313,7 @@ class PaymentGateway extends Fetch {
    * @Customer
    * Update Customer Card on File
    *
-   * @method customerCardValidate
+   * @method customerUpdateCard
    *
    * @param {Object} data
    * @param {String} data.reference_id
