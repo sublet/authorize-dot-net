@@ -58,7 +58,7 @@ class NMI extends Fetch {
     //console.log(this._payload);
     if (this._payload) {
       this._response = await this._send();
-      console.log(this._response);
+      // console.log(this._response);
       return this;
     }
     throw new Error('Payload could not be generated.');
