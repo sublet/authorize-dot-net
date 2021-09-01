@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const Fetch = require('./fetch');
 const sha512 = require('js-sha512').sha512;
 const parser = require('fast-xml-parser');
+const creditCardType = require('credit-card-type');
 
 /**
  * NMI Integration:
@@ -53,6 +54,7 @@ class NMI extends Fetch {
   async process(data, config) {
     this._uri = config.uri;
     this._payload = await this.build(data, config);
+    // console.log(this._payload)
     if (this._payload) {
       const results = await this.post('', this._payload);
       if (results && this._isValidXml(results)) {
@@ -84,6 +86,15 @@ class NMI extends Fetch {
 
   generateToken(length) {
     return crypto.randomBytes(Math.ceil(length / 2.0)).toString('hex');
+  }
+
+  getCardType(cardNumber) {
+    const cardTypes = creditCardType(cardNumber);
+    if (cardTypes.length) {
+      const type = cardTypes[0].type.toUpperCase()
+      return type
+    }
+    throw new Error('Card type could not be determined.')
   }
 
   // private
