@@ -3,20 +3,22 @@ process.env.NODE_ENV = 'test';
 const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
-  id: null,
-  key: '6457Thfj624V5r7WUwc5v6a68Zsd6YEm',
+  id: '1064771',
+  secret: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
-  gateway: 'NMI',
+  gateway: 'NUVEI',
 });
 
-describe('NMI', function () {
-  describe('Credit Card - Void', function () {
+let data = null
+
+describe('Nuvei', function () {
+  describe('Credit Card - Refund', function () {
     this.timeout(5000);
     let transaction = null;
     before(async () => {
-      const data = {
+      data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
-        amount: '386.12',
+        amount: '386.11',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
           number: '5424000000000015',
@@ -35,17 +37,20 @@ describe('NMI', function () {
           zip: '10001',
           country: 'USA',
         },
+        email: 'yoman@bob.com',
+        phone: '2125551212',
       };
 
-      const res = await gateway.authorizeCreditCard(data);
+      const res = await gateway.chargeCreditCard(data);
       transaction = res.toJson();
     });
     it('should return a transaction id', async function () {
-      const data = {
+      const params = {
         transaction_id: transaction.response.transactionId,
+        amount: data.amount
       };
 
-      const res = await gateway.voidTransaction(data);
+      const res = await gateway.refundTransaction(params);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
