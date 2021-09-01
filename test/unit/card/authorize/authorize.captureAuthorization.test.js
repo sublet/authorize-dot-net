@@ -9,7 +9,7 @@ const gateway = require('../../../../src')({
   gateway: 'AUTHORIZE',
 });
 
-describe('Authorize.net', function () {
+describe.skip('Authorize.net', function () {
   describe('Credit Card - Capture', function () {
     let authorization;
     before(async () => {

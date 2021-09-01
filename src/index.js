@@ -1,7 +1,8 @@
 const Fetch = require('./lib/base/fetch');
 
-const authorize = require('./lib/authorize');
+// const authorize = require('./lib/authorize');
 const nmi = require('./lib/nmi');
+const nuvei = require('./lib/nuvei');
 
 const gateways = ['AUTHORIZE', 'NMI'];
 const environments = ['SANDBOX', 'PRODUCTION'];
@@ -10,15 +11,23 @@ class PaymentGateway extends Fetch {
   constructor(config) {
     super();
 
-    if (!config.key) throw new Error('Key is invalid');
     if (!config.gateway) throw new Error('Gateway is invalid');
     if (!config.environment) throw new Error('Environment is invalid');
-    if (config.gateway === 'AUTHORIZE') {
+
+    if (config.gateway === 'NMI') {
+      if (!config.key) throw new Error('Key is invalid');
+    } else if (config.gateway === 'AUTHORIZE') {
       if (!config.id) throw new Error('Login ID is invalid');
+      if (!config.key) throw new Error('Key is invalid');
       config.login_id = config.id;
       config.transaction_key = config.key;
       delete config.id;
       delete config.key;
+    } else if (config.gateway === 'NUVEI') {
+      if (!config.id) throw new Error('Login ID is invalid');
+      if (!config.secret) throw new Error('Login Secret is invalid');
+      config.terminal_id = config.id;
+      delete config.id;
     }
 
     this._gateway = null;
@@ -46,14 +55,20 @@ class PaymentGateway extends Fetch {
     if (this._config.gateway && this._config.environment) {
       let uri = null;
       if (this._config.gateway === 'AUTHORIZE') {
-        this._gateway = authorize;
-        uri =
-          this._config.environment === 'PRODUCTION'
-            ? 'https://api.authorize.net/xml'
-            : 'https://apitest.authorize.net/xml';
+        // this._gateway = authorize;
+        // uri =
+        //   this._config.environment === 'PRODUCTION'
+        //     ? 'https://api.authorize.net/xml'
+        //     : 'https://apitest.authorize.net/xml';
       } else if (this._config.gateway === 'NMI') {
         this._gateway = nmi;
         uri = 'https://secure.networkmerchants.com';
+      } else if (this._config.gateway === 'NUVEI') {
+        this._gateway = nuvei;
+        uri =
+          this._config.environment === 'PRODUCTION'
+            ? 'https://payments.nuvei.com/merchant/xmlpayment'
+            : 'https://testpayments.nuvei.com/merchant/xmlpayment';
       }
       this._config.uri = uri;
     }

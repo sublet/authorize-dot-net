@@ -35,19 +35,19 @@ class Fetch {
   }
 
   async get(url, params = null) {
-    return await this._request('GET', url, params);
+    return this._request('GET', url, params);
   }
 
   async post(url, params = null) {
-    return await this._request('POST', url, params);
+    return this._request('POST', url, params);
   }
 
   async put(url, params = null) {
-    return await this._request('PUT', url, params);
+    return this._request('PUT', url, params);
   }
 
   async delete(url, params = null) {
-    return await this._request('DELETE', url, params);
+    return this._request('DELETE', url, params);
   }
 
   _buildQueryStringFromJSON(params) {

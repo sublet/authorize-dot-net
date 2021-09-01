@@ -9,7 +9,7 @@ const gateway = require('../../../../src')({
   gateway: 'AUTHORIZE',
 });
 
-describe('Authorize.net', function () {
+describe.skip('Authorize.net', function () {
   describe('Customer - Create', function () {
     it('return a customer id', async function () {
       const data = {

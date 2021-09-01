@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PREAUTH>
+	<ORDERID><%= data.orderId %></ORDERID>
+	<TERMINALID><%= data.terminalId %></TERMINALID>
+	<AMOUNT><%= data.amount %></AMOUNT>
+	<DATETIME><%= data.dateTime %></DATETIME>
+	<CARDNUMBER><%= data.cardNumber %></CARDNUMBER>
+	<CARDTYPE><%= data.cardType %></CARDTYPE>
+	<CARDEXPIRY><%= data.cardExpiry %></CARDEXPIRY>
+	<CARDHOLDERNAME><%= data.name %></CARDHOLDERNAME>
+	<HASH><%= data.hash %></HASH>
+	<CURRENCY><%= data.currency %></CURRENCY>
+	<TERMINALTYPE>1</TERMINALTYPE>
+	<TRANSACTIONTYPE>7</TRANSACTIONTYPE>
+	<CVV><%= data.cvv %></CVV>
+	<POSTCODE><%= data.zip %></POSTCODE>
+	<CUSTOMFIELD NAME="VictimID"><%= data.victimId %></CUSTOMFIELD>
+</PREAUTH>

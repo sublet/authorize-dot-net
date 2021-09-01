@@ -13,7 +13,7 @@ const currentPlanId = uuid();
 
 describe('NMI', function () {
   describe('Recurring - Plan Create', function () {
-    it.only('return a successful response', async function () {
+    it('return a successful response', async function () {
       const data = {
         plan_payments: 4,
         plan_amount: 250.5,
@@ -61,7 +61,7 @@ describe('NMI', function () {
     });
   });
   describe('Recurring - Plan Edit', function () {
-    it.only('return...', async function () {
+    it('return...', async function () {
       const data = {
         current_plan_id: currentPlanId,
         plan_payments: 10,
