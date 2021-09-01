@@ -23,23 +23,29 @@ class Customer_Create extends Base {
   }
 
   /**
-   * 
+   *
    * MERCHANTREF:DATETIME:CARDNUMBER:CARDEXPIRY:CARDTYPE:CARDHOLDERNAME
    *
    * @method _generateCaptureHash
-   * 
+   *
    * @param {String} merchantRef
    * @param {String} amount
    * @param {DateTime} dateTime
    */
-   buildHash({ merchantRef, dateTime, cardNumber, cardExp, cardType, cardHolderName }, config) {
-    return this._generateHash(`${merchantRef}:${dateTime}:${cardNumber}:${cardExp}:${cardType}:${cardHolderName}`, config);
+  buildHash(
+    { merchantRef, dateTime, cardNumber, cardExp, cardType, cardHolderName },
+    config,
+  ) {
+    return this._generateHash(
+      `${merchantRef}:${dateTime}:${cardNumber}:${cardExp}:${cardType}:${cardHolderName}`,
+      config,
+    );
   }
 
   // Auth Specific
 
   _buildData(data, config) {
-    const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss')
+    const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss');
     const cardYear =
       data.card.expiration.year.length === 4
         ? data.card.expiration.year.substr(2, 4)
@@ -51,8 +57,8 @@ class Customer_Create extends Base {
       cardExp: `${data.card.expiration.month}${cardYear}`,
       cardType,
       cardHolderName: `${data.customer.firstName} ${data.customer.lastName}`,
-      dateTime
-    }
+      dateTime,
+    };
     return {
       merchantRef: data.merchant_ref,
       terminalId: null,
@@ -62,8 +68,8 @@ class Customer_Create extends Base {
       cardType,
       cardHolderName: `${data.customer.firstName} ${data.customer.lastName}`,
       cvv: data.card.code,
-      hash: this.buildHash(hashParams, config)
-    }
+      hash: this.buildHash(hashParams, config),
+    };
   }
 
   toJson() {
@@ -71,7 +77,10 @@ class Customer_Create extends Base {
     if (this._response['ERROR']) {
       json = this._map(this._response['ERROR'], this._params);
     } else {
-      json = this._map(this._response['SECURECARDREGISTRATIONRESPONSE'], this._params);
+      json = this._map(
+        this._response['SECURECARDREGISTRATIONRESPONSE'],
+        this._params,
+      );
     }
     if (json) {
       let response = {
@@ -91,12 +100,12 @@ class Customer_Create extends Base {
           response: '1',
           responseCode: 'Customer Added',
           code: '100',
-          message: 'Customer Added'
-        }
+          message: 'Customer Added',
+        };
         response['response'] = {
           authorizationCode: '',
           transactionId: '',
-          customerId: String(json.cardReference)
+          customerId: String(json.cardReference),
         };
       }
       return response;

@@ -9,7 +9,7 @@ const gateway = require('../../../../src')({
   gateway: 'NMI',
 });
 
-describe.only('NMI', function () {
+describe('NMI', function () {
   describe('Customer - Create', function () {
     it('return a customer id', async function () {
       const data = {
@@ -40,8 +40,6 @@ describe.only('NMI', function () {
       const res = await gateway.createCustomer(data);
 
       const results = res.toJson();
-
-      console.log(results)
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);

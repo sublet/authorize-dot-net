@@ -10,8 +10,10 @@ const gateway = require('../../../../src')({
 });
 
 describe('Nuvei', function () {
-  describe('Customer - Create', function () {
-    it('return a customer id', async function () {
+  this.timeout(5000);
+  describe('Customer - Authorize Card on File', function () {
+    let customer;
+    before(async () => {
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         merchant_ref: uuid(),
@@ -29,16 +31,28 @@ describe('Nuvei', function () {
           description: 'Customer profile for Bob Yoman',
           firstName: 'Bob',
           lastName: 'Yoman',
-        },
+        }
+      };
+      const res = await gateway.createCustomer(data);
+      customer = res.toJson();
+    });
+    it('return a customer id', async function () {
+      const data = {
+        reference_id: uuid().replace(/-/g, '').substr(0, 15),
+        amount: '386.12',
+        customer_vault_id: customer.response.customerId,
+        zip: '07052'
       };
 
-      const res = await gateway.createCustomer(data);
-
+      const res = await gateway.customerAuthorizeTransaction(data);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.customerId).to.be.a('string');
+      expect(results.response.customerId).to.be.equal(
+        customer.response.customerId,
+      );
     });
   });
 });

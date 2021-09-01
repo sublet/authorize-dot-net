@@ -54,7 +54,7 @@ class NMI extends Fetch {
   async process(data, config) {
     this._uri = config.uri;
     this._payload = await this.build(data, config);
-    // console.log(this._payload)
+    console.log(this._payload)
     if (this._payload) {
       const results = await this.post('', this._payload);
       if (results && this._isValidXml(results)) {
@@ -91,10 +91,10 @@ class NMI extends Fetch {
   getCardType(cardNumber) {
     const cardTypes = creditCardType(cardNumber);
     if (cardTypes.length) {
-      const type = cardTypes[0].type.toUpperCase()
-      return type
+      const type = cardTypes[0].type.toUpperCase();
+      return type;
     }
-    throw new Error('Card type could not be determined.')
+    throw new Error('Card type could not be determined.');
   }
 
   // private

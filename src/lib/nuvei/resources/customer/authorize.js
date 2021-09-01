@@ -4,52 +4,59 @@ const path = require('path');
 const moment = require('moment');
 
 /**
- * Captures a Credit Card that was previously Authorized.
+ * Authorize a charge on a customers card stored in the vault.
  *
- * @class CreditCard_Capture
+ * @class Customer_Authorize
  * @extends Nuvei
  *
  */
 
-class CreditCard_Capture extends Base {
+class Customer_Authorize extends Base {
   // Exposed Methods
 
   async build(params, config) {
     this._params = params;
     const data = this._buildData(params, config);
     data.terminalId = config.terminal_id;
-    const filename = path.resolve(__dirname, '../../ejs/capture.ejs');
+    const filename = path.resolve(__dirname, '../../ejs/customer_auth.ejs');
     return this._getFile(filename, { data });
   }
 
   /**
+   *
+   * Build Hash with Proper Params
+   *
    * @method buildHash
    *
-   * @param {String} uniqueRef
+   * @param {String} orderId
    * @param {String} amount
    * @param {DateTime} dateTime
    */
-  buildHash({ uniqueRef, amount, dateTime }, config) {
-    return this._generateHash(`${uniqueRef}:${amount}:${dateTime}`, config);
+  buildHash({ orderId, amount, dateTime }, config) {
+    return this._generateHash(`${orderId}:${amount}:${dateTime}`, config);
   }
 
   // Auth Specific
 
   _buildData(data, config) {
+    const orderId = this.generateToken(24);
     const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss');
     const hashParams = {
-      uniqueRef: data.ref,
+      orderId: orderId,
       amount: data.amount,
       dateTime,
     };
     return {
-      ref: data.ref,
+      orderId,
       terminalId: null,
       amount: data.amount,
-      dateTime: dateTime,
-      // cvv: data.code,
+      zip: data.zip,
+      dateTime,
+      cardType: 'SECURECARD',
+      cardNumber: data.customer_vault_id,
       hash: this.buildHash(hashParams, config),
-      //   victimId: '123-123-123',
+      currency: 'USD',
+      victimId: '123-123-123',
     };
   }
 
@@ -58,10 +65,7 @@ class CreditCard_Capture extends Base {
     if (this._response['ERROR']) {
       json = this._map(this._response['ERROR'], this._params);
     } else {
-      json = this._map(
-        this._response['PREAUTHCOMPLETIONRESPONSE'],
-        this._params,
-      );
+      json = this._map(this._response['PREAUTHRESPONSE'], this._params);
     }
     if (json) {
       let response = {
@@ -76,6 +80,7 @@ class CreditCard_Capture extends Base {
           authorizationCode: json.approvalCode,
           transactionId: json.ref,
           transactionHash: json.hash,
+          customerId: this._params.customer_vault_id
         };
       } else {
         response.errors = {
@@ -128,4 +133,4 @@ class CreditCard_Capture extends Base {
   }
 }
 
-module.exports = CreditCard_Capture;
+module.exports = Customer_Authorize;
