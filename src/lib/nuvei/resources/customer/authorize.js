@@ -80,7 +80,7 @@ class Customer_Authorize extends Base {
           authorizationCode: json.approvalCode,
           transactionId: json.ref,
           transactionHash: json.hash,
-          customerId: this._params.customer_vault_id
+          customerId: this._params.customer_vault_id,
         };
       } else {
         response.errors = {

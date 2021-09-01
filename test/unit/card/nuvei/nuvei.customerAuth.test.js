@@ -31,7 +31,7 @@ describe('Nuvei', function () {
           description: 'Customer profile for Bob Yoman',
           firstName: 'Bob',
           lastName: 'Yoman',
-        }
+        },
       };
       const res = await gateway.createCustomer(data);
       customer = res.toJson();
@@ -41,7 +41,7 @@ describe('Nuvei', function () {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         amount: '386.12',
         customer_vault_id: customer.response.customerId,
-        zip: '07052'
+        zip: '07052',
       };
 
       const res = await gateway.customerAuthorizeTransaction(data);
