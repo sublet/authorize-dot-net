@@ -35,7 +35,7 @@ describe('Nuvei', function () {
           country: 'USA',
         },
         email: 'yoman@bob.com',
-        phone: '2125551212'
+        phone: '2125551212',
         // customer_vault: 'add_customer',
       };
 

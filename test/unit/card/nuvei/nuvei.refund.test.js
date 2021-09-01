@@ -9,7 +9,7 @@ const gateway = require('../../../../src')({
   gateway: 'NUVEI',
 });
 
-let data = null
+let data = null;
 
 describe('Nuvei', function () {
   describe('Credit Card - Refund', function () {
@@ -47,7 +47,7 @@ describe('Nuvei', function () {
     it('should return a transaction id', async function () {
       const params = {
         transaction_id: transaction.response.transactionId,
-        amount: data.amount
+        amount: data.amount,
       };
 
       const res = await gateway.refundTransaction(params);

@@ -31,35 +31,29 @@ class CreditCard_Refund extends Base {
    * @param {String} uniqueRef
    * @param {String} amount
    * @param {DateTime} dateTime
-   * 
+   *
    * TERMINALID:UNIQUEREF:AMOUNT:DATETIME:SECRET
    */
-  buildHash(
-    { uniqueRef, amount, dateTime },
-    config,
-  ) {
-    return this._generateHash(
-      `${uniqueRef}:${amount}:${dateTime}`,
-      config,
-    );
+  buildHash({ uniqueRef, amount, dateTime }, config) {
+    return this._generateHash(`${uniqueRef}:${amount}:${dateTime}`, config);
   }
 
   // Auth Specific
 
   _buildData(data, config) {
-    const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss')
+    const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss');
     const hashParams = {
       uniqueRef: data.transaction_id,
       amount: data.amount,
-      dateTime
-    }
+      dateTime,
+    };
     return {
       ref: data.transaction_id,
       terminalId: null,
       amount: data.amount,
       dateTime: dateTime,
-      hash: this.buildHash(hashParams, config)
-    }
+      hash: this.buildHash(hashParams, config),
+    };
   }
 
   toJson() {
@@ -67,10 +61,7 @@ class CreditCard_Refund extends Base {
     if (this._response['ERROR']) {
       json = this._map(this._response['ERROR'], this._params);
     } else {
-      json = this._map(
-        this._response['REFUNDRESPONSE'],
-        this._params,
-      );
+      json = this._map(this._response['REFUNDRESPONSE'], this._params);
     }
 
     if (json) {
@@ -91,11 +82,11 @@ class CreditCard_Refund extends Base {
           response: '1',
           responseCode: 'SUCCESS',
           code: '100',
-          message: 'SUCCESS'
+          message: 'SUCCESS',
         };
         response['response'] = {
           transactionId: json.ref,
-          hash: json.hash
+          hash: json.hash,
         };
       }
       return response;

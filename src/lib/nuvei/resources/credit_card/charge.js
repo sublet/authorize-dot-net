@@ -31,9 +31,9 @@ class CreditCard_Charge extends Base {
    * @param {String} orderId
    * @param {String} amount
    * @param {DateTime} dateTime
-   * 
+   *
    * TERMINALID:ORDERID:AMOUNT:DATETIME:SECRET
-   * 
+   *
    */
   buildHash({ orderId, amount, dateTime }, config) {
     return this._generateHash(`${orderId}:${amount}:${dateTime}`, config);
