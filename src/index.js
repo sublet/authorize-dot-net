@@ -40,7 +40,6 @@ class PaymentGateway extends Fetch {
   }
 
   resetGateway(config) {
-
     if (!config.gateway) throw new Error('Gateway is invalid');
     if (!config.environment) throw new Error('Environment is invalid');
 

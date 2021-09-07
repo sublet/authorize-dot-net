@@ -40,7 +40,7 @@ describe('NUVEI', function () {
       const res = await gateway.authorizeCreditCard(authorizeData);
       authorization = res.toJson();
     });
-    it.only('should return a transaction id', async function () {
+    it('should return a transaction id', async function () {
       expect(authorization.isSuccess).to.be.true;
 
       const {
@@ -53,7 +53,7 @@ describe('NUVEI', function () {
         amount: '386.12',
         transaction_id: transactionId,
         card: {
-          code: '999'
+          code: '999',
         },
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
       };
