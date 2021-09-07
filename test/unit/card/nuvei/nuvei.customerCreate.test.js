@@ -4,7 +4,7 @@ const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
   id: '1064771',
-  secret: 'KEEW@vaub!bar6bley',
+  key: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
   gateway: 'NUVEI',
 });

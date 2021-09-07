@@ -24,9 +24,40 @@ class PaymentGateway extends Fetch {
       delete config.id;
       delete config.key;
     } else if (config.gateway === 'NUVEI') {
-      if (!config.id) throw new Error('Login ID is invalid');
-      if (!config.secret) throw new Error('Login Secret is invalid');
+      if (!config.id) throw new Error('Gateway ID is invalid');
+      if (!config.key) throw new Error('Gateway Secret is invalid');
       config.terminal_id = config.id;
+      config.secret = config.key;
+      delete config.id;
+    }
+
+    this._gateway = null;
+
+    this._config = config;
+    this._config.uri = null;
+
+    this._setGatewayUri();
+  }
+
+  resetGateway(config) {
+
+    if (!config.gateway) throw new Error('Gateway is invalid');
+    if (!config.environment) throw new Error('Environment is invalid');
+
+    if (config.gateway === 'NMI') {
+      if (!config.key) throw new Error('Key is invalid');
+    } else if (config.gateway === 'AUTHORIZE') {
+      if (!config.id) throw new Error('Login ID is invalid');
+      if (!config.key) throw new Error('Key is invalid');
+      config.login_id = config.id;
+      config.transaction_key = config.key;
+      delete config.id;
+      delete config.key;
+    } else if (config.gateway === 'NUVEI') {
+      if (!config.id) throw new Error('Gateway ID is invalid');
+      if (!config.key) throw new Error('Gateway Secret is invalid');
+      config.terminal_id = config.id;
+      config.secret = config.key;
       delete config.id;
     }
 

@@ -38,16 +38,16 @@ class CreditCard_Capture extends Base {
   _buildData(data, config) {
     const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss');
     const hashParams = {
-      uniqueRef: data.ref,
+      uniqueRef: data.transaction_id,
       amount: data.amount,
       dateTime,
     };
     return {
-      ref: data.ref,
+      ref: data.transaction_id,
       terminalId: null,
       amount: data.amount,
       dateTime: dateTime,
-      // cvv: data.code,
+      cvv: data.card.code,
       hash: this.buildHash(hashParams, config),
       //   victimId: '123-123-123',
     };

@@ -4,12 +4,12 @@ const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
   id: '1064771',
-  secret: 'KEEW@vaub!bar6bley',
+  key: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
   gateway: 'NUVEI',
 });
 
-describe.skip('NUVEI', function () {
+describe('NUVEI', function () {
   this.timeout(5000);
   describe('Credit Card - Capture', function () {
     let authorization;
@@ -19,11 +19,11 @@ describe.skip('NUVEI', function () {
         amount: '386.12',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
-          number: '5424000000000015',
-          code: '999',
+          number: '4111111111111111',
+          code: '123',
           expiration: {
             month: '12',
-            year: '2020',
+            year: '2022',
           },
         },
         billing: {
@@ -40,18 +40,21 @@ describe.skip('NUVEI', function () {
       const res = await gateway.authorizeCreditCard(authorizeData);
       authorization = res.toJson();
     });
-    it('should return a transaction id', async function () {
+    it.only('should return a transaction id', async function () {
       expect(authorization.isSuccess).to.be.true;
 
       const {
         referenceId,
-        response: { authorizationCode },
+        response: { transactionId },
       } = authorization;
 
       const data = {
         reference_id: referenceId,
         amount: '386.12',
-        transaction_id: authorizationCode,
+        transaction_id: transactionId,
+        card: {
+          code: '999'
+        },
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
       };
 
