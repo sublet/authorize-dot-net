@@ -3,19 +3,22 @@ process.env.NODE_ENV = 'test';
 const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
-  id: '8896Zak2B4vP',
-  key: '24TrC2Hy999n63Yy',
+  id: '1064771',
+  key: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
-  gateway: 'AUTHORIZE',
+  gateway: 'NUVEI',
 });
 
-describe.skip('Authorize.net', function () {
-  describe('Credit Card - Capture', function () {
-    let authorization;
+let data = null;
+
+describe('Nuvei', function () {
+  describe('Credit Card - Refund', function () {
+    this.timeout(5000);
+    let transaction = null;
     before(async () => {
-      const authorizeData = {
+      data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
-        amount: '386.12',
+        amount: '386.11',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
           number: '5424000000000015',
@@ -34,31 +37,23 @@ describe.skip('Authorize.net', function () {
           zip: '10001',
           country: 'USA',
         },
+        email: 'yoman@bob.com',
+        phone: '2125551212',
       };
 
-      const res = await gateway.authorizeCreditCard(authorizeData);
-      authorization = res.toJson();
+      const res = await gateway.chargeCreditCard(data);
+      transaction = res.toJson();
     });
     it('should return a transaction id', async function () {
-      expect(authorization.isSuccess).to.be.true;
-
-      const {
-        referenceId,
-        response: { transactionId },
-      } = authorization;
-
-      const data = {
-        reference_id: referenceId,
-        amount: '212.12',
-        transaction_id: transactionId,
-        invoice_number: uuid().replace(/-/g, '').substr(0, 15),
+      const params = {
+        transaction_id: transaction.response.transactionId,
+        amount: data.amount,
       };
 
-      const res = await gateway.captureCreditCard(data);
+      const res = await gateway.refundTransaction(params);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
-      expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.transactionId).to.be.a('string');
     });
 

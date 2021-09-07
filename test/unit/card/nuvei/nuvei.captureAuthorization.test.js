@@ -3,13 +3,14 @@ process.env.NODE_ENV = 'test';
 const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
-  id: '8896Zak2B4vP',
-  key: '24TrC2Hy999n63Yy',
+  id: '1064771',
+  key: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
-  gateway: 'AUTHORIZE',
+  gateway: 'NUVEI',
 });
 
-describe.skip('Authorize.net', function () {
+describe('NUVEI', function () {
+  this.timeout(5000);
   describe('Credit Card - Capture', function () {
     let authorization;
     before(async () => {
@@ -18,11 +19,11 @@ describe.skip('Authorize.net', function () {
         amount: '386.12',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
         card: {
-          number: '5424000000000015',
-          code: '999',
+          number: '4111111111111111',
+          code: '123',
           expiration: {
             month: '12',
-            year: '2020',
+            year: '2022',
           },
         },
         billing: {
@@ -49,8 +50,11 @@ describe.skip('Authorize.net', function () {
 
       const data = {
         reference_id: referenceId,
-        amount: '212.12',
+        amount: '386.12',
         transaction_id: transactionId,
+        card: {
+          code: '999',
+        },
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
       };
 

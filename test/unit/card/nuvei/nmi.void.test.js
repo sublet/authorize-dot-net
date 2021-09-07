@@ -3,17 +3,20 @@ process.env.NODE_ENV = 'test';
 const { uuid } = require('uuidv4');
 const expect = require('chai').expect;
 const gateway = require('../../../../src')({
-  id: '8896Zak2B4vP',
-  key: '24TrC2Hy999n63Yy',
+  id: '1064771',
+  key: 'KEEW@vaub!bar6bley',
   environment: 'SANDBOX',
-  gateway: 'AUTHORIZE',
+  gateway: 'NUVEI',
 });
 
-describe.skip('Authorize.net', function () {
-  describe('Credit Card - Capture', function () {
-    let authorization;
+let data = null;
+
+describe('Nuvei', function () {
+  describe('Credit Card - Void', function () {
+    this.timeout(5000);
+    let transaction = null;
     before(async () => {
-      const authorizeData = {
+      data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         amount: '386.12',
         invoice_number: uuid().replace(/-/g, '').substr(0, 15),
@@ -36,29 +39,20 @@ describe.skip('Authorize.net', function () {
         },
       };
 
-      const res = await gateway.authorizeCreditCard(authorizeData);
-      authorization = res.toJson();
+      const res = await gateway.authorizeCreditCard(data);
+      transaction = res.toJson();
     });
+
     it('should return a transaction id', async function () {
-      expect(authorization.isSuccess).to.be.true;
-
-      const {
-        referenceId,
-        response: { transactionId },
-      } = authorization;
-
-      const data = {
-        reference_id: referenceId,
-        amount: '212.12',
-        transaction_id: transactionId,
-        invoice_number: uuid().replace(/-/g, '').substr(0, 15),
+      const params = {
+        transaction_id: transaction.response.transactionId,
+        amount: data.amount,
       };
 
-      const res = await gateway.captureCreditCard(data);
+      const res = await gateway.voidTransaction(params);
       const results = res.toJson();
 
       expect(results.isSuccess).to.be.true;
-      expect(results.referenceId).to.be.equal(data.reference_id);
       expect(results.response.transactionId).to.be.a('string');
     });
 
