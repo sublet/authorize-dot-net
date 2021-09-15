@@ -42,13 +42,11 @@ describe('Nuvei', function () {
         amount: '386.12',
         customer_vault_id: customer.response.customerId,
         zip: '07052',
-        cvv: '123'
+        cvv: '123',
       };
 
       const res = await gateway.customerChargeTransaction(data);
       const results = res.toJson();
-
-      console.log(results)
 
       expect(results.isSuccess).to.be.true;
       expect(results.referenceId).to.be.equal(data.reference_id);
