@@ -36,6 +36,9 @@ class Customer_Create extends Base {
     { merchantRef, dateTime, cardNumber, cardExp, cardType, cardHolderName },
     config,
   ) {
+    console.log('##### HASH VARS - BEG')
+    console.log(merchantRef, dateTime, cardNumber, cardExp, cardType, cardHolderName)
+    console.log('##### HASH - END')
     return this._generateHash(
       `${merchantRef}:${dateTime}:${cardNumber}:${cardExp}:${cardType}:${cardHolderName}`,
       config,
