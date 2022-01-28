@@ -11,7 +11,7 @@ const creditCardType = require('credit-card-type');
  * https://secure.networkmerchants.com/gw/merchants/resources/integration/integration_portal.php
  */
 
-class NMI extends Fetch {
+class Nuvei extends Fetch {
   constructor(type) {
     super();
 
@@ -54,10 +54,10 @@ class NMI extends Fetch {
   async process(data, config) {
     this._uri = config.uri;
     this._payload = await this.build(data, config);
-    // console.log(this._payload);
     if (this._payload) {
       const results = await this.post('', this._payload);
       if (results && this._isValidXml(results)) {
+        // console.log('results: ', results)
         this._response = this._parseData(results);
         return this;
       }
@@ -135,17 +135,24 @@ class NMI extends Fetch {
     return {
       response: json.status,
       responseCode: json.responseCode,
+      responseText: json.responseText || json.status || null,
       code: json.responseCode,
       message: null,
     };
   }
 
-  _jsonErrors(errors) {
-    if (errors) {
+  _jsonErrors(json) {
+    // console.log('Errors: ', json)
+    if (json && json.error && json.error.errorCode) {
       return {
-        code: errors.error.errorCode._text,
-        message: errors.error.errorText._text,
+        code: json.error.errorCode._text,
+        message: json.error.errorText._text,
       };
+    } else if (json && json.responseCode === 'D') {
+      return {
+        code: json.status,
+        message: json.status
+      }
     }
     return {};
   }
@@ -175,4 +182,4 @@ class NMI extends Fetch {
   }
 }
 
-module.exports = NMI;
+module.exports = Nuvei;

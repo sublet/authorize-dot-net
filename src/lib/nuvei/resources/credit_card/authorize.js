@@ -64,6 +64,7 @@ class CreditCard_Authorize extends Base {
       cvv: data.card.code,
       zip: data.billing.zip,
       victimId: '123-123-123',
+      bypassSurcharge: data.bypassSurcharge || false
     };
   }
 

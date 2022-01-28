@@ -47,8 +47,6 @@ class Customer_Update extends NMI {
       if (data.customer.country) payload.country = data.customer.country;
     }
 
-    console.log('Incoming Payload: ', payload);
-
     return payload;
   }
 

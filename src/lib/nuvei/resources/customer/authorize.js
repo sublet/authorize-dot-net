@@ -57,6 +57,7 @@ class Customer_Authorize extends Base {
       hash: this.buildHash(hashParams, config),
       currency: 'USD',
       victimId: '123-123-123',
+      bypassSurcharge: data.bypassSurcharge || false
     };
   }
 
@@ -85,7 +86,7 @@ class Customer_Authorize extends Base {
       } else {
         response.errors = {
           code: 'ERROR',
-          message: json.errorResponse,
+          message: this._jsonErrors(json),
         };
       }
       return response;

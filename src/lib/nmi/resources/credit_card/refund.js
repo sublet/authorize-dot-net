@@ -20,6 +20,8 @@ class CreditCard_Refund extends NMI {
     payload.transactionid = data.transaction_id;
     payload.void_reason = data.void_reason || 'user_cancel';
 
+    if (data.amount) payload.amount = data.amount;
+
     return payload;
   }
 

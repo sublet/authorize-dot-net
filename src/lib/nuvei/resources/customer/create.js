@@ -55,7 +55,7 @@ class Customer_Create extends Base {
       merchantRef: data.merchant_ref,
       cardNumber: data.card.number,
       cardExp: `${data.card.expiration.month}${cardYear}`,
-      cardType,
+      cardType: data.card.type || cardType,
       cardHolderName: `${data.customer.firstName} ${data.customer.lastName}`,
       dateTime,
     };
@@ -65,7 +65,7 @@ class Customer_Create extends Base {
       dateTime: dateTime,
       cardNumber: data.card.number,
       cardExp: `${data.card.expiration.month}${cardYear}`,
-      cardType,
+      cardType: data.card.type || cardType,
       cardHolderName: `${data.customer.firstName} ${data.customer.lastName}`,
       cvv: data.card.code,
       hash: this.buildHash(hashParams, config),
