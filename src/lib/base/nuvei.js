@@ -151,8 +151,8 @@ class Nuvei extends Fetch {
     } else if (json && json.responseCode === 'D') {
       return {
         code: json.status,
-        message: json.status
-      }
+        message: json.status,
+      };
     }
     return {};
   }

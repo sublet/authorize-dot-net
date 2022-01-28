@@ -52,7 +52,7 @@ describe('Nuvei', function () {
             month: '12',
             year: '2022',
           },
-          type: 'VISA DEBIT'
+          type: 'VISA DEBIT',
         },
         customer: {
           id: uuid().replace(/-/g, '').substr(0, 20),

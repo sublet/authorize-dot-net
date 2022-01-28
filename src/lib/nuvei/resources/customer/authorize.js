@@ -57,7 +57,7 @@ class Customer_Authorize extends Base {
       hash: this.buildHash(hashParams, config),
       currency: 'USD',
       victimId: '123-123-123',
-      bypassSurcharge: data.bypassSurcharge || false
+      bypassSurcharge: data.bypassSurcharge || false,
     };
   }
 
