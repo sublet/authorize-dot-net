@@ -42,7 +42,6 @@ describe('Nuvei', function () {
         amount: '386.12',
         customer_vault_id: customer.response.customerId,
         zip: '07052',
-        cvv: '123',
       };
 
       const res = await gateway.customerChargeTransaction(data);

@@ -38,6 +38,16 @@ class Customer_Charge extends Base {
 
   // Auth Specific
 
+  _getMetaValue(arr, key) {
+    if (arr && arr.length) {
+      const foundPlanId = arr.find(itm => itm.key === key);
+      if (foundPlanId) {
+        return foundPlanId.value;
+      }
+    }
+    return null;
+  }
+
   _buildData(data, config) {
     const orderId = this.generateToken(24);
     const dateTime = moment().format('DD-MM-YYYY:HH:mm:ss:sss');
@@ -46,6 +56,10 @@ class Customer_Charge extends Base {
       amount: data.amount,
       dateTime,
     };
+
+    let planId = this._getMetaValue(data.custom_fields, 'plan_id');
+    let tyoe = this._getMetaValue(data.custom_fields, 'type');
+
     return {
       orderId,
       terminalId: null,
@@ -57,7 +71,8 @@ class Customer_Charge extends Base {
       hash: this.buildHash(hashParams, config),
       currency: 'USD',
       cvv: data.cvv,
-      victimId: '123-123-123',
+      victimId: planId,
+      tyoe,
     };
   }
 

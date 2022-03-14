@@ -12,7 +12,7 @@ const gateway = require('../../../../src')({
 let data = null;
 
 describe('Nuvei', function () {
-  describe.only('Credit Card - Refund', function () {
+  describe('Credit Card - Refund', function () {
     this.timeout(5000);
     let transaction = null;
     before(async () => {

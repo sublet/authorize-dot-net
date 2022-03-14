@@ -57,7 +57,6 @@ class Nuvei extends Fetch {
     if (this._payload) {
       const results = await this.post('', this._payload);
       if (results && this._isValidXml(results)) {
-        // console.log('results: ', results)
         this._response = this._parseData(results);
         return this;
       }
