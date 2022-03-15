@@ -31,8 +31,10 @@ class Customer_Create extends NMI {
 
     if (data.customer_id) payload.customer_vault_id = data.customer_id;
 
-    if (data.customer && data.customer.email) payload.email = data.customer.email;
-    if (data.customer && data.customer.phone) payload.phone = data.customer.phone;
+    if (data.customer && data.customer.email)
+      payload.email = data.customer.email;
+    if (data.customer && data.customer.phone)
+      payload.phone = data.customer.phone;
 
     if (data.customer) {
       if (data.customer.firstName) payload.first_name = data.customer.firstName;

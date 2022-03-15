@@ -9,5 +9,5 @@ module.exports = {
   charge: new Customer_Charge('CUSTOMER_SALE'),
   authorize: new Customer_Authorize('CUSTOMER_AUTHORIZE'),
   // validate: new Customer_CardValidate('CUSTOMER_VALIDATE'),
-  update: new Customer_Update('CUSTOMER_UPDATE')
+  update: new Customer_Update('CUSTOMER_UPDATE'),
 };

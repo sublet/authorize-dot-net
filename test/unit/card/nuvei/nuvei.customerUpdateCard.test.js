@@ -15,7 +15,7 @@ describe('Nuvei', function () {
     let customer;
     let referenceId;
     before(async () => {
-      referenceId = uuid()
+      referenceId = uuid();
       const data = {
         reference_id: uuid().replace(/-/g, '').substr(0, 15),
         merchant_ref: referenceId,
@@ -39,7 +39,6 @@ describe('Nuvei', function () {
       customer = res.toJson();
     });
     it('return a customer id', async function () {
-      
       const data = {
         access_key: 'e6f0592f258fba946e36a28319e575a0',
         reference_id: 'fccf79494125f8a7',
@@ -49,14 +48,14 @@ describe('Nuvei', function () {
           number: '5411111111111115',
           expiration: { month: '12', year: '2022' },
           zip: '07052',
-          name: 'Jeffrey Hunter'
+          name: 'Jeffrey Hunter',
         },
         customer: {
           firstName: 'Jeffrey',
-          lastName: 'Hunter'
+          lastName: 'Hunter',
         },
-        customer_id: '123456677'
-      }
+        customer_id: '123456677',
+      };
 
       const res = await gateway.customerUpdateCard(data);
       const results = res.toJson();
