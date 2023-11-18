@@ -12,7 +12,7 @@ const gateway = require('../../../../src')({
 describe('NMI', function () {
   describe('Credit Card - Refund', function () {
     this.timeout(5000);
-    
+
     let transaction = null;
     before(async () => {
       const data = {
@@ -48,9 +48,9 @@ describe('NMI', function () {
       const data = {
         transaction_id: transaction.response.transactionId,
         custom_fields: [
-          { key: "transaction_id", value: transaction.response.transactionId },
-          { key: "case_id", value: uuid() }
-        ]
+          { key: 'transaction_id', value: transaction.response.transactionId },
+          { key: 'case_id', value: uuid() },
+        ],
       };
 
       const res = await gateway.refundTransaction(data);
