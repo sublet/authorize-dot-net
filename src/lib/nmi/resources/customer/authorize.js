@@ -21,6 +21,7 @@ class Customer_Authorize extends NMI {
     payload.amount = data.amount;
     payload.customer_vault_id = data.customer_vault_id;
     payload.merchant_defined_field_1 = data.reference_id;
+    if (data.card && data.card.code) payload.cvv = data.card.code;
 
     let i = 1;
     data.custom_fields.forEach(field => {

@@ -16,6 +16,8 @@ class Customer_Charge extends NMI {
 
     this.customerVaultId = data.customer_vault_id;
 
+    if (data.cvv) payload.cvv = data.cvv
+
     payload.security_key = data.access_key ? data.access_key : key;
     payload.test_mode = data.test_mode !== undefined ? data.test_mode : false;
     payload.amount = data.amount;
