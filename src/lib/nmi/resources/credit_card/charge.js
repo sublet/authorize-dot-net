@@ -57,6 +57,8 @@ class CreditCard_Charge extends NMI {
     if (data.customer_vault_id)
       payload.customer_vault_id = data.customer_vault_id;
 
+    if (data.ipaddress) payload.ipaddress = data.ipaddress;
+
     return payload;
   }
 
@@ -78,6 +80,7 @@ class CreditCard_Charge extends NMI {
       zip: null,
       phone: null,
       email: null,
+      ipaddress: null,
       merchant_defined_field_1: null,
       customer_receipt: false,
     };
